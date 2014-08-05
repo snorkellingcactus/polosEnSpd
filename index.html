@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="Resolutor de estado de Routh" />
+		<meta name="author"	content="Nadal Gonzalo García Zavala" />
+		<title>Resolutor de estado de Routh</title>
+		<link rel="stylesheet" type="text/css" href="index.css"/>
+		<script type="text/javascript" src="./index.js"></script>
+	</head>
+	<body>
+		<p>Pol: <input type="text" autofocus="autofocus" name="pol"/></p>;
+		<p name="res">Res: </p>
+		
+		<script type="text/javascript">
+			document.getElementsByName("pol")[0].addEventListener
+			(
+				"keydown",
+				function(event)
+				{
+					if(event.keyCode==13)
+					{
+						outinput();
+					}
+				}
+			);
+		</script>
+	</body>
+</html>
