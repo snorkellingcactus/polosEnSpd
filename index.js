@@ -31,60 +31,77 @@ function strMonArr(strMon)
 			switch(strMon[j])
 			{
 				case "^":
-				num=parseFloat(numBuff)||1;
-				numBuff="";
-				modoExpo=true;
+					num=parseFloat(numBuff)||1;
+					numBuff="";
+					modoExpo=true;
 				log.txt("Se realizará una potenciación");
 				break;
 				case "*":
-				num=parseFloat(numBuff)||1;
-				numBuff="";
-				modoMult=true;
+					num=parseFloat(numBuff)||1;
+					numBuff="";
+					modoMult=true;
 				log.txt("Se realizará una multiplicación");
 				break;
 				case ",":
-				numBuff+=".";
+					numBuff+=".";
 				log.txt("Es una coma");
 				break;
 				case "(":
-				j=strMon.indexOf(")");
-				break;
-				default:
-				if(incogAct)
-				{
 					if(!modoExpo)
 					{
-						log.txt("Se determino 1 al exponente de "+incogAct);
-						incogs[incogAct][1]=1;
-						incogs[incogAct][0]=(incogs[incogAct][0]||1)*(parseFloat(numBuff));
-						log.txt("Se determinó "+incogs[incogAct][0]+" para el coheficiente de "+incogAct)
-						numBuff="";
+						var posFin=str.substr(j).indexOf(")")+j;
+						var incog=incogAct+str.substr(j,posFin);
+						if(!fns[incog])
+						{
+							incogAct+=str.substr(j,posFin);
+							j+=posFin;
+						}
 					}
-				}
-				else
-				{
-					//Nueva incógnita.
-					log.txt("Se trata de una nueva incógnita");
-					if(modoMult)
+				break;
+				case ")":
+				modoExpo=false;
+				incogs[incogAct][1]=parseFloat(numBuff);
+				break;
+				default:
+					if(incogAct)
 					{
-						var tmp=num;
-						num=tmp*(parseFloat(numBuff)||1);
-						numBuff="";
-						modoMult=false;
+						if(!modoExpo)
+						{
+							log.txt("Se determino 1 al exponente de "+incogAct);
+							incogs[incogAct][1]=1;
+							incogs[incogAct][0]=(incogs[incogAct][0]||1)*(parseFloat(numBuff));
+							log.txt("Se determinó "+incogs[incogAct][0]+" para el coheficiente de "+incogAct)
+							numBuff="";
+						}
+						else
+						{
+							
+						}
 					}
-				}
-				if(!incogs[strMon[j]])
-				{
-					incogs[strMon[j]]=[];
-					incogs[strMon[j]][0]=(parseFloat(numBuff)||1);
-					incogs[strMon[j]][1]=1;
-					numBuff="";
-					log.txt("creada nueva incógnita "+strMon[j]);
-					log.array();
-					log.array(incogs[strMon[j]],strMon[j]);
-					log.array();
-				}
-				incogAct=strMon[j];
+					else
+					{
+						//Nueva incógnita.
+						log.txt("Se trata de una nueva incógnita");
+						if(modoMult)
+						{
+							var tmp=num;
+							num=tmp*(parseFloat(numBuff)||1);
+							numBuff="";
+							modoMult=false;
+						}
+					}
+					if(!incogs[strMon[j]])
+					{
+						incogs[strMon[j]]=[];
+						incogs[strMon[j]][0]=(parseFloat(numBuff)||1);
+						incogs[strMon[j]][1]=1;
+						numBuff="";
+						log.txt("creada nueva incógnita "+strMon[j]);
+						log.array();
+						log.array(incogs[strMon[j]],strMon[j]);
+						log.array();
+					}
+					incogAct=strMon[j];
 			};
 		}
 		else
@@ -99,6 +116,11 @@ function strMonArr(strMon)
 		j++;
 	}
 	
+	if(modoExpo)
+	{
+		modoExpo=false;
+		incogs[incogAct][1]=parseFloat(numBuff);
+	}
 	log.array()
 	log.array(incogs);
 	log.array();
@@ -269,6 +291,9 @@ function procesaPol(txt)
 }
 function outinput()
 {
+	document.getElementsByName("res")[0].innerHTML=""
+	log.buff="";
+
 	var pol=procesaPol(document.getElementsByName("pol")[0].value);
 	log.sep();
 	log.fn("Respuesta:");
