@@ -251,7 +251,7 @@ Interp.prototype.mkMult=function()
 		this.num=parseFloat(this.buff)*this.num;
 
 		this.log.txt('Una multiplicación resultó '+this.num);
-		this.buff="";
+		this.buff=this.num;
 		this.mult=false;
 	}
 }
@@ -268,6 +268,7 @@ Interp.prototype.opExpo=function()
 //Cuando se indica una multiplicación (^);
 Interp.prototype.opMult=function()
 {
+	this.mkMult();
 	this.floatBuff();
 	this.buff=""
 	this.mult=true;
