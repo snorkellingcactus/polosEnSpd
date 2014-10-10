@@ -10,7 +10,7 @@ Interp=function()
 	this.pos=0;
 	this.signo=1;
 	this.incog=0;
-	this.num=0;
+	this.num=1;
 	this.buff='';
 	this.str='';
 	this.monomio={};
@@ -75,6 +75,15 @@ Interp.prototype.clrStr=function(str)
 {
 	this.log.txt("Aplicando RegExp");
 	this.str=this.str.replace( /\s|\./g , "");
+}
+Interp.prototype.limpia=function()
+{
+	this.expo=false;
+	this.res=false;
+	this.fn=false;
+	this.incog=0;
+	this.num=1;
+	this.buff='';
 }
 Interp.prototype.letraDef=function(letra)
 {
@@ -324,10 +333,7 @@ Interp.prototype.opMas=function()
 		//Vacío lo que va a ser el nuevo monomio.
 		this.monomio={};
 
-		this.expo=false;
-		this.res=false;
-		this.fn=false;
-		this.incog=0;
+		this.limpia();
 	}
 }
 Interp.prototype.opMenos=function()
