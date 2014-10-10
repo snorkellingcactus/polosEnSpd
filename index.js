@@ -84,6 +84,7 @@ Interp.prototype.limpia=function()
 	this.fn=false;
 	this.incog=0;
 	this.num=1;
+	this.signo=1;
 	this.buff='';
 	this.monomio={incogs:[]};
 }
@@ -249,7 +250,9 @@ Interp.prototype.insMonomio=function()
 	else
 	{
 		//Es una constante, no un monomio.
+		log.txt('El término resultó en una constante '+this.buff);
 		this.expresion.const+=parseFloat(this.buff)*this.signo;
+		log.txt('Suma total de constantes: '+this.expresion.const);
 	}
 	this.limpia();
 }
@@ -343,8 +346,8 @@ Interp.prototype.opMas=function()
 }
 Interp.prototype.opMenos=function()
 {
+	this.opMas();
 	this.signo=-1;
-	this.opSuma();
 }
 //Formatea un polinomio escrito para que pueda ser procesado por las funciones (borra espacios y puntos).
 function clrStrPol(strPol)
