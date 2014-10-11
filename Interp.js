@@ -316,13 +316,14 @@ Interp.prototype.opMas=function(letra)
 	}
 	else
 	{
-		this.buff+=letra;
+		this.buff=letra;
 	}
 }
 Interp.prototype.opMenos=function(letra)
 {
 	this.opMas(letra);
 	this.signo=-1;
+	this.buff=letra;
 }
 
 //Ordena array de monomios por los exponentes de cada uno.
