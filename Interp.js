@@ -43,7 +43,7 @@ Interp.prototype.limpia=function()
 }
 Interp.prototype.letraDef=function(letra)
 {
-	if(this.incog)
+	if(this.incog&&this.incog==letra)
 	{
 		if(!this.expo)
 		{
@@ -281,10 +281,7 @@ Interp.prototype.opParIni=function()
 			this.pos+=posFin;
 		}
 	}
-	else
-	{
-		this.res=true;
-	}
+	this.res=true;
 }
 Interp.prototype.opParFin=function()
 {
