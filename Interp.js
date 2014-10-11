@@ -10,7 +10,7 @@ Interp=function()
 	this.pos=0;
 	this.signo=1;
 	this.incog=0;
-	this.num=1;
+	this.num=0;
 	this.buff='';
 	this.str='';
 	this.monomio={incogs:[]};
@@ -47,6 +47,7 @@ Interp.prototype.letraDef=function(letra)
 	{
 		if(!this.expo)
 		{
+			log.txt("Incognita al momento: "+this.incog)
 			log.txt("Buffer = "+this.buff);
 			this.buff=parseFloat(this.buff);
 			if(!this.buff && this.buff!==0)
@@ -69,16 +70,17 @@ Interp.prototype.letraDef=function(letra)
 	{
 		//Nueva incógnita.
 		this.log.txt("Se trata de una nueva incógnita");
-
 		this.mkMult();
+		this.mkExpo();
+
+		log.txt('Num = '+this.num+' ; Buff= '+this.buff);
 
 		this.monomio[letra]=[];
-		this.monomio[letra][0]=(parseFloat(this.buff)||this.num)*this.signo;
+		this.monomio[letra][0]=(parseFloat(this.buff)||this.num);
 		this.monomio[letra][1]=1;
 
 		this.monomio.incogs.push(letra);
 
-		this.buff="";
 		this.signo=1;
 		this.log.txt("creada nueva incógnita "+letra);
 
@@ -110,10 +112,10 @@ Interp.prototype.letraOp=function(letra)
 			this.opParFin();
 		break;
 		case '-':
-			this.opMenos();
+			this.opMenos(letra);
 		break;
 		case '+':
-			this.opMas();
+			this.opMas(letra);
 		break;
 		case '':
 
@@ -162,6 +164,7 @@ Interp.prototype.interpStr=function(str)
 		++this.pos;
 	}
 
+	this.mkMult();
 	this.mkExpo();
 
 	this.insMonomio(this.monomio);
@@ -195,7 +198,7 @@ Interp.prototype.insMonomio=function()
 	{
 		//Es una constante, no un monomio.
 		log.txt('El término resultó en una constante '+this.buff);
-		this.expresion.const+=parseFloat(this.buff)*this.signo;
+		this.expresion.const+=parseFloat(this.buff);
 		log.txt('Suma total de constantes: '+this.expresion.const);
 	}
 	this.limpia();
@@ -204,10 +207,9 @@ Interp.prototype.mkMult=function()
 {
 	if(this.mult)
 	{
-		this.num=parseFloat(this.buff)*this.num;
+		this.buff=parseFloat(this.buff)*this.num;
 
-		this.log.txt('Una multiplicación resultó '+this.num);
-		this.buff=this.num;
+		this.log.txt('Una multiplicación resultó '+this.buff);
 		this.mult=false;
 	}
 }
@@ -217,16 +219,18 @@ Interp.prototype.mkExpo=function()
 	{
 		if(!this.incog)
 		{
+			log.txt("Expo: Num = "+this.num+" ; Buff = "+this.buff);
 			//Se está elevando la constante.
-			log.txt("Buffer"+this.expresion.const);
-			this.buff=Math.pow(this.num , parseFloat(this.buff)*this.signo);
-			this.log.txt('Se exponenció una constante, resultando '+this.expresion.const);
+			this.buff=Math.pow(this.num , parseFloat(this.buff));
+			this.log.txt('Se exponenció una constante, resultando '+this.buff);
 		}
 		else
 		{
 			//Le asigno el exponente a la incógnita.
-			this.monomio[this.incog][1]=parseFloat(this.buff)*this.signo;
+			this.monomio[this.incog][1]=parseFloat(this.buff);
 			this.log.txt("Se determinó el exponente "+this.monomio[this.incog][1]+" para la incognita "+this.incog);
+			this.buff='';
+			this.num=1;
 		}
 	}
 	this.expo=false;
@@ -247,6 +251,8 @@ Interp.prototype.opExpo=function()
 Interp.prototype.opMult=function()
 {
 	this.mkMult();
+	this.mkExpo();
+
 	this.floatBuff();
 	this.buff=""
 	this.mult=true;
@@ -275,38 +281,47 @@ Interp.prototype.opParIni=function()
 			this.pos+=posFin;
 		}
 	}
+	else
+	{
+		this.res=true;
+	}
 }
 Interp.prototype.opParFin=function()
 {
 	if(this.expo&&this.mult)
 	{
-		this.expo=false;
 		this.mkMult();
+		this.mkExpo();
 		this.monomio[this.incog][1]=this.num;
 		this.log.txt('Se (re)determinó '+this.monomio[this.incog][1]+' para el exponente.');
 	}
+	this.res=false;
 }
-Interp.prototype.opMas=function()
+Interp.prototype.opMas=function(letra)
 {
 	//Si se estaba procesando un exponente
 	//Lo guardo 
-	if(this.expo&&this.buff.length)
-	{
-		this.mkExpo();
-	}
-	if(!(this.expo||this.mult||this.res))
-	{
-		this.insMonomio(this.monomio);
+	this.mkExpo();
+	this.mkMult();
 
+	if(!(this.expo||this.mult||this.res)&&(this.num||this.buff.length))
+	{
+		log.txt('opMas: Num = '+this.num+' ; Buff = '+this.buff);
 		this.log.txt("Insertado monomio:");
 		this.log.array();
 		this.log.array(this.monomio);
 		this.log.array();
+
+		this.insMonomio(this.monomio);
+	}
+	else
+	{
+		this.buff+=letra;
 	}
 }
-Interp.prototype.opMenos=function()
+Interp.prototype.opMenos=function(letra)
 {
-	this.opMas();
+	this.opMas(letra);
 	this.signo=-1;
 }
 
