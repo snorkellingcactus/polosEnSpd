@@ -8,12 +8,12 @@ Interp=function()
 
 	//Entorno.
 	this.pos=0;
-	this.signo=1;
+	this.str='';
+
 	this.incog=0;
 	this.num=0;
 	this.buff='';
-	this.str='';
-	this.monomio={incogs:[]};
+	this.monomio={incogs:[],cohef:1};
 
 	//Objeto de logeo para salidas verbosas.
 	this.log=new Log();
@@ -28,8 +28,9 @@ Interp=function()
 Interp.prototype.clrStr=function(str)
 {
 	this.log.txt("Aplicando RegExp");
-	this.str=this.str.replace( /\s|\./g , "");
+	this.str=this.str.replace( /\s/g , "");
 }
+//Reseteo las variables.
 Interp.prototype.limpia=function()
 {
 	this.expo=false;
@@ -37,58 +38,39 @@ Interp.prototype.limpia=function()
 	this.fn=false;
 	this.incog=0;
 	this.num=1;
-	this.signo=1;
 	this.buff='';
-	this.monomio={incogs:[]};
+	this.monomio={incogs:[],cohef:1};
 }
-Interp.prototype.letraDef=function(letra)
+//Cuando se encuentra una letra que no corresponde a ninguna operación,
+//Se toma como incógnita.
+Interp.prototype.incogOp=function(letra)
 {
-	if(this.incog&&this.incog==letra)
-	{
-		if(!this.expo)
-		{
-			log.txt("Incognita al momento: "+this.incog)
-			log.txt("Buffer = "+this.buff);
-			this.buff=parseFloat(this.buff);
-			if(!this.buff && this.buff!==0)
-			{
-				this.buff=1;
-			}
-			log.txt("Buffer = "+this.buff);
-			
-			this.log.txt("Se determino 1 al exponente de "+this.incog);
-			this.monomio[this.incog][1]=1;
-			this.monomio[this.incog][0]=(this.monomio[this.incog][0]||1)*(this.buff)*this.signo;
-
-			this.buff="";
-			this.signo=1;
-
-			this.log.txt("Se determinó "+this.monomio[this.incog][0]+" para el coheficiente de "+this.incog)
-		}
-	}
 	if(!this.monomio[letra])
 	{
-		//Nueva incógnita.
-		this.log.txt("Se trata de una nueva incógnita");
+		//Realizo las posibles operaciones pendientes.
 		this.mkMult();
 		this.mkExpo();
-
-		log.txt('Num = '+this.num+' ; Buff= '+this.buff);
-
-		this.monomio[letra]=[];
-		this.monomio[letra][0]=(parseFloat(this.buff)||this.num);
-		this.monomio[letra][1]=1;
-
+	
+		if(!this.incog)
+		{
+			this.monomio.cohef=parseFloat(this.buff);
+		}
+		this.monomio[letra]=1;
 		this.monomio.incogs.push(letra);
-
-		this.signo=1;
+	
+		this.log.txt('Num = '+this.num+' ; Buff= '+this.buff);
+		this.log.txt("Se trata de una nueva incógnita");
 		this.log.txt("creada nueva incógnita "+letra);
-
-		log.array();
-		log.array(this.monomio[letra],letra);
-		log.array();
 	}
+
+	//Secciono incógnita.
 	this.incog=letra;
+}
+//Cuando se encuentra un número lo almacena en el buffer.
+Interp.prototype.numOp=function(num)
+{
+	this.log.txt("Se encontró un numero. ( "+num+" )");
+	this.buff+=num;
 }
 //Deriva a la función indicada dependiendo de la letra que se encontró.
 Interp.prototype.letraOp=function(letra)
@@ -102,8 +84,8 @@ Interp.prototype.letraOp=function(letra)
 		case '*':
 			this.opMult();
 		break;
-		case ',':
-			this.opComa();
+		case '/':
+			this.opDiv();
 		break;
 		case '(':
 			this.opParIni();
@@ -117,36 +99,26 @@ Interp.prototype.letraOp=function(letra)
 		case '+':
 			this.opMas(letra);
 		break;
-		case '':
-
-		break;
 		default:
-		this.letraDef(letra);
+		this.incogOp(letra);
 	}
 }
-Interp.prototype.numOp=function(num)
-{
-	this.log.txt("Se encontró un numero. ( "+num+" )");
-	this.buff+=num;
-}
+//Analiza uno a uno los carácteres del string y realiza las operaciones.
 Interp.prototype.interpStr=function(str)
 {
+	//Creo una expresion si no la hay.
 	if(!this.expresion)
 	{
 		this.expresion=new Exp();
 	}
-	this.log.txt("Convirtiendo monomios en arrays para coleccionarlos:");
 
 	this.str=str;
-	//Limpio el texto.
-	this.clrStr(str);
+	this.clrStr(str);		//Borro espacios y puntos.
 
+	this.log.txt("Comenzando a interpretar cadena");
 	this.log.txt("Entrada: "+this.str);
 
-	//El nuevo monomio.
-	monomio={};
-
-	this.pos=0;
+	this.pos=0
 
 	while(this.pos<this.str.length)
 	{
@@ -164,23 +136,28 @@ Interp.prototype.interpStr=function(str)
 		++this.pos;
 	}
 
+	//Realizo posibles operaciones pendientes.
 	this.mkMult();
 	this.mkExpo();
+	this.floatBuff();
 
-	this.insMonomio(this.monomio);
+	//Agrego el monomio a la expresión.
+	this.expMonomio(this.monomio);
 
 	this.log.txt('Constante: '+this.expresion.const);
 	this.log.txt('Lista monomios:');
-	log.array()
-	log.array(this.expresion.monomios);
-	log.array();
+	this.log.array()
+	this.log.array(this.expresion.monomios);
+	this.log.array();
 	this.log.txt('Lista referencias según incógnitas:');
-	log.array();
-	log.array(this.expresion.refs.incogs);
-	log.array();
-	log.sep();
+	this.log.array();
+	this.log.array(this.expresion.refs.incogs);
+	this.log.array();
+	this.log.sep();
+
 	return this.expresion;
 };
+//Convierte a número this.buff y lo almacena en this.num.
 Interp.prototype.floatBuff=function()
 {
 	this.num=parseFloat
@@ -188,7 +165,8 @@ Interp.prototype.floatBuff=function()
 		this.buff
 	)||1;
 }
-Interp.prototype.insMonomio=function()
+//Si el monomio es real lo agrega a la expresión.
+Interp.prototype.expMonomio=function()
 {
 	if(this.incog)
 	{
@@ -197,74 +175,87 @@ Interp.prototype.insMonomio=function()
 	else
 	{
 		//Es una constante, no un monomio.
-		log.txt('El término resultó en una constante '+this.buff);
-		this.expresion.const+=parseFloat(this.buff);
-		log.txt('Suma total de constantes: '+this.expresion.const);
+		log.txt('Buff = '+this.buff+' Num = '+this.num);
+		this.expresion.const+=this.num;
+		log.txt('El término resultó en una constante '+this.expresion.const);
 	}
+
 	this.limpia();
 }
+//Realiza una multiplicación.
 Interp.prototype.mkMult=function()
 {
 	if(this.mult)
 	{
-		this.buff=parseFloat(this.buff)*this.num;
-
-		this.log.txt('Una multiplicación resultó '+this.buff);
-		this.mult=false;
+		if(this.incog)
+		{
+			log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X '+this.buff);
+			this.monomio.cohef*=parseFloat(this.buff);
+			log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+		}
+		else
+		{
+			this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
+			this.buff=parseFloat(this.buff)*this.num;
+			this.log.txt('Una multiplicación resultó '+this.buff);
+		}
 	}
+	this.mult=false;
 }
+//Realiza una exponenciación.
 Interp.prototype.mkExpo=function()
 {
 	if(this.expo)
 	{
-		if(!this.incog)
+		if(this.incog)
 		{
-			log.txt("Expo: Num = "+this.num+" ; Buff = "+this.buff);
-			//Se está elevando la constante.
-			this.buff=Math.pow(this.num , parseFloat(this.buff));
-			this.log.txt('Se exponenció una constante, resultando '+this.buff);
+			//Le asigno el exponente a la incógnita.
+			this.monomio[this.incog]=parseFloat(this.buff);
+
+			this.log.txt("Se determinó el exponente "+this.monomio[this.incog]+" para la incognita "+this.incog);
 		}
 		else
 		{
-			//Le asigno el exponente a la incógnita.
-			this.monomio[this.incog][1]=parseFloat(this.buff);
-			this.log.txt("Se determinó el exponente "+this.monomio[this.incog][1]+" para la incognita "+this.incog);
-			this.buff='';
-			this.num=1;
+			//Se está elevando la constante.
+			this.buff=Math.pow(this.num , parseFloat(this.buff));
+
+			this.log.txt('Se exponenció una constante, resultando '+this.buff);
 		}
 	}
 	this.expo=false;
 }
-//Cuando se indica una exponenciación (^);
+//Prepara una exponenciación ( ^ );
 Interp.prototype.opExpo=function()
 {
 	this.mkMult();
+	this.mkExpo();
 
 	this.floatBuff();
-	this.buff="";
+	this.buff='';
 
 	this.expo=true;
 
 	this.log.txt("Se realizará una potenciación");
 }
-//Cuando se indica una multiplicación (^);
+//Prepara una multiplicación ( * );
 Interp.prototype.opMult=function()
 {
 	this.mkMult();
 	this.mkExpo();
 
 	this.floatBuff();
-	this.buff=""
+	this.buff=''
+
 	this.mult=true;
 
 	this.log.txt("Se realizará una multiplicación");
 }
-Interp.prototype.opComa=function()
+//Prepara una división ( / ).
+Interp.prototype.opDiv=function()
 {
-	this.buff+=".";
-
-	this.log.txt("Es una coma");
+	this.div=true;
 }
+//Cuando se abren paréntesis ( ( ).
 Interp.prototype.opParIni=function()
 {
 	if(!this.expo)
@@ -283,17 +274,19 @@ Interp.prototype.opParIni=function()
 	}
 	this.res=true;
 }
+//Cuando se cierran paréntesis ( ) ).
 Interp.prototype.opParFin=function()
 {
 	if(this.expo&&this.mult)
 	{
 		this.mkMult();
 		this.mkExpo();
-		this.monomio[this.incog][1]=this.num;
-		this.log.txt('Se (re)determinó '+this.monomio[this.incog][1]+' para el exponente.');
+		this.monomio[this.incog]=this.num;
+		this.log.txt('Se (re)determinó '+this.monomio[this.incog]+' para el exponente.');
 	}
 	this.res=false;
 }
+//Cuando se suma ( + ).
 Interp.prototype.opMas=function(letra)
 {
 	//Si se estaba procesando un exponente
@@ -303,23 +296,24 @@ Interp.prototype.opMas=function(letra)
 
 	if(!(this.expo||this.mult||this.res)&&(this.num||this.buff.length))
 	{
-		log.txt('opMas: Num = '+this.num+' ; Buff = '+this.buff);
+		this.log.txt('opMas: Num = '+this.num+' ; Buff = '+this.buff);
 		this.log.txt("Insertado monomio:");
 		this.log.array();
 		this.log.array(this.monomio);
 		this.log.array();
 
-		this.insMonomio(this.monomio);
+		this.floatBuff();
+		this.expMonomio(this.monomio);
 	}
 	else
 	{
 		this.buff=letra;
 	}
 }
+//Cuando se resta ( - ).
 Interp.prototype.opMenos=function(letra)
 {
 	this.opMas(letra);
-	this.signo=-1;
 	this.buff=letra;
 }
 
