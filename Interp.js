@@ -144,6 +144,8 @@ Interp.prototype.interpStr=function(str)
 	//Agrego el monomio a la expresión.
 	this.expMonomio(this.monomio);
 
+	this.combina(this.expresion);
+
 	this.log.txt('Constante: '+this.expresion.const);
 	this.log.txt('Lista monomios:');
 	this.log.array()
@@ -316,7 +318,19 @@ Interp.prototype.opMenos=function(letra)
 	this.opMas(letra);
 	this.buff=letra;
 }
+Interp.prototype.combina=function(expObj)
+{
+	/*pila=[];
 
+	for(i=0;i<expObj.refs.incogs.length;i++)
+	{
+		
+	}*/
+}
+Interp.prototype.routh=function(expObj)
+{
+	
+}
 //Ordena array de monomios por los exponentes de cada uno.
 function reordenaCohef(polArr)
 {

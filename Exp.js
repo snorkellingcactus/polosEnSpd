@@ -38,10 +38,17 @@ Exp.prototype.insMonomio=function(monomio)
 		if(!this.refs.incogs[incogStr])
 		{
 			this.refs.incogs[incogStr]=[];
+			
+			//Si agrego el ID del monomio a la lista de referencias por incógnitas.
+			this.refs.incogs[incogStr].push(this.monomios.length);
+			//Agrego el monomio a la expresión.
+			this.monomios.push(monomio);
 		}
-		//Si agrego el ID del monomio a la lista de referencias por incógnitas.
-		this.refs.incogs[incogStr].push(this.monomios.length);
-		//Agrego el monomio a la expresión.
-		this.monomios.push(monomio);
+		else
+		{
+			//Si ya existe un monomio con mismas incognitas a mismos exponentes,
+			//multiplico sus coheficientes.
+			this.monomios[this.refs.incogs[incogStr]].cohef*=monomio.cohef;
+		}
 	}
 }
