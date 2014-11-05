@@ -5,7 +5,6 @@ Log=function()
 	this.enable=true;
 	this.arrayDef=false;
 }
-
 Log.prototype.isAble=function()
 {
 	if(!this.enable)
@@ -43,22 +42,26 @@ Log.prototype.arrayStr=function(param,clave)
 
 	var tipo=param.constructor.toString();
 	var esArr=tipo.indexOf("Array()")!=-1;
-	var esObj=tipo.indexOf("Object()")!=-1;
-	var clase="arrEle";
-	var sep=["[","]"];
+	var esObj=typeof param == 'object';
+	var clase="objEle";
+	var sep=["{","}"];
 	
-	if(esObj)
+	if(esArr)
 	{
-		clase="objEle";
-		sep=["{","}"];
+		clase="arrEle";
+		sep=["[","]"];
 	}
 	if(esArr || esObj)
 	{
 		this.buff+=" "+sep[0]+" ";
 		for(var clave in param)
 		{
-			this.buff+="<font class='"+clase+"'>"+clave+":</font>";
-			this.arrayStr(param[clave],clave);
+			var prop=param[clave];
+			if(param.hasOwnProperty(clave))
+			{
+				this.buff+="<font class='"+clase+"'>"+clave+":</font>";
+				this.arrayStr(prop,clave);
+			}
 		}
 		this.buff=this.buff.substr(0,this.buff.length-1)+" "+sep[1]+" ";
 	}

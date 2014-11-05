@@ -13,10 +13,11 @@ Interp=function()
 	this.incog=0;
 	this.num=0;
 	this.buff='';
-	this.monomio={incogs:[],cohef:1};
+	this.monomio=new Mon();
 
 	//Objeto de logeo para salidas verbosas.
 	this.log=new Log();
+	this.log.fn('new Exp()');
 
 	if(arguments.length)
 	{
@@ -39,7 +40,7 @@ Interp.prototype.limpia=function()
 	this.incog=0;
 	this.num=1;
 	this.buff='';
-	this.monomio={incogs:[],cohef:1};
+	this.monomio=new Mon();
 }
 //Cuando se encuentra una letra que no corresponde a ninguna operación,
 //Se toma como incógnita.
@@ -110,6 +111,9 @@ Interp.prototype.interpStr=function(str)
 	if(!this.expresion)
 	{
 		this.expresion=new Exp();
+
+		this.log.fn('new Exp()');
+		this.expresion.log=this.log;
 	}
 
 	this.str=str;
@@ -503,7 +507,7 @@ log=interp.log;
 
 function procesaPol(txt)
 {
-	interp.interpStr(txt);
+	Expresion=interp.interpStr(txt);
 	//proc=reordenaCohef(proc);
 	log.sep();
 	//pol=combinaIgualExp(pol);
