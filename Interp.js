@@ -4,6 +4,7 @@ Interp=function()
 	this.expoIncog=false;
 	this.expo=false;
 	this.mult=false;
+	this.div=false;
 	this.res=false;
 	this.fn=false;
 
@@ -203,6 +204,7 @@ Interp.prototype.mkOps=function()
 	if(this.buff.length)
 	{
 		this.mkMult();
+		this.mkDiv();
 		this.mkExpo();
 
 		this.floatBuff();
@@ -227,6 +229,26 @@ Interp.prototype.mkMult=function()
 		}
 	}
 	this.mult=false;
+}
+//Realiza una multiplicación.
+Interp.prototype.mkDiv=function()
+{
+	if(this.div)
+	{
+		if(this.incog)
+		{
+			log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
+			this.monomio.cohef*=1/parseFloat(this.buff);
+			log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+		}
+		else
+		{
+			this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
+			this.buff=(1/parseFloat(this.buff))*this.num;
+			this.log.txt('Una multiplicación resultó '+this.buff);
+		}
+	}
+	this.div=false;
 }
 //Realiza una exponenciación.
 Interp.prototype.mkExpo=function()
@@ -281,6 +303,8 @@ Interp.prototype.opMult=function()
 Interp.prototype.opDiv=function()
 {
 	this.div=true;
+
+	this.log.txt("Se realizará una división");
 }
 //Cuando se abren paréntesis ( ( ).
 Interp.prototype.opParIni=function()
