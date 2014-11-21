@@ -3,7 +3,7 @@ Exp=function()
 	//Distintos arrays que permiten referenciar monomios
 	//según distintos patrones.
 	this.refs={'incogs':[''],'factorP':[]};
-	this.incogs=[];
+	this.subExp=[];
 
 	//Lista de monomios.
 	this.monomios=[];
@@ -122,4 +122,8 @@ Exp.prototype.insMonomio=function(monomio)
 Exp.prototype.routh=function()
 {
 	
+}
+Exp.prototype.esK=function()
+{
+	return !this.monomios.length
 }

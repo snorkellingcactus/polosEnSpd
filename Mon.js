@@ -9,3 +9,8 @@ Mon.prototype.dIncog=function(nIncog)
 	delete this.incogs[this[nIncog]];
 	delete this[nIncog];
 }
+Mon.prototype.nIncog=function(incNom)
+{
+	this.incogs.push(incNom);
+	this[incNom]=0;
+}

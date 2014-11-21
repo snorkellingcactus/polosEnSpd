@@ -23,7 +23,14 @@ Interp=function()
 
 	if(arguments.length)
 	{
-		this.interpStr(arguments[0]);
+		if(typeof arguments[0]=="object")
+		{
+			this.expresion=arguments[0];
+		}
+		else
+		{
+			this.interpStr(arguments[0]);
+		}
 	}
 }
 //Función que borra espacios y puntos de un string
@@ -51,20 +58,20 @@ Interp.prototype.incogOp=function(letra)
 {
 	if(!this.monomio[letra])
 	{
-	
 		if(!this.incog)
 		{
 			this.monomio.cohef=this.num;
 
 			this.log.txt('Coheficiente: '+this.monomio.cohef);
 		}
-		this.monomio[letra]=1;
-		this.monomio.incogs.push(letra);
-	
+
+		this.monomio.nIncog(letra);
+
 		this.log.txt("Se trata de una nueva incógnita");
 		this.log.txt("creada nueva incógnita "+letra);
 	}
 
+	this.monomio[letra]++;
 	//Secciono incógnita.
 	this.incog=letra;
 }
@@ -78,17 +85,19 @@ Interp.prototype.numOp=function(num)
 Interp.prototype.letraOp=function(letra)
 {
 	this.log.txt("Se encontró una letra. ( "+letra+" )");
-	//Realizo las posibles operaciones pendientes.
-	this.mkOps();
+
 	switch(letra)
 	{
 		case '^':
+			this.mkOps();
 			this.opExpo();
 		break;
 		case '*':
+			this.mkOps();
 			this.opMult();
 		break;
 		case '/':
+			this.mkOps();
 			this.opDiv();
 		break;
 		case '(':
@@ -98,18 +107,25 @@ Interp.prototype.letraOp=function(letra)
 			this.opParFin();
 		break;
 		case '-':
+			this.mkOps();
 			this.opMenos(letra);
 		break;
 		case '+':
+			this.mkOps();
 			this.opMas(letra);
 		break;
 		default:
+		this.mkOps();
 		this.incogOp(letra);
 	}
 }
 //Analiza uno a uno los carácteres del string y realiza las operaciones.
 Interp.prototype.interpStr=function(str)
 {
+	if(!window.exec)
+	{
+		window.exec=1;
+	}
 	//Creo una expresion si no la hay.
 	if(!this.expresion)
 	{
@@ -120,7 +136,9 @@ Interp.prototype.interpStr=function(str)
 	}
 
 	this.str=str;
-	this.clrStr(str);		//Borro espacios y puntos.
+
+	log.txt("Entrada:"+this.str);	
+	this.clrStr(this.str);		//Borro espacios y puntos.
 
 	this.log.txt("Comenzando a interpretar cadena");
 	this.log.txt("Entrada: "+this.str);
@@ -192,7 +210,6 @@ Interp.prototype.expMonomio=function()
 	else
 	{
 		//Es una constante, no un monomio.
-		log.txt('Buff = '+this.buff+' Num = '+this.num);
 		this.expresion.const+=this.num;
 		log.txt('El término resultó en una constante '+this.expresion.const);
 	}
@@ -309,31 +326,34 @@ Interp.prototype.opDiv=function()
 //Cuando se abren paréntesis ( ( ).
 Interp.prototype.opParIni=function()
 {
-	if(!this.expo)
-	{
-		var posFin=str.substr(this.pos).indexOf(")")+this.pos;
-		var incog=this.incog+str.substr(this.pos,posFin);
-		if(!fns[incog])
+		var posFin=this.str.substr(this.pos).indexOf(")")+this.pos;
+		var nExpStr=this.str.substr(this.pos+1,posFin-3);
+		log.txt("Subexpresión: "+nExpStr);
+		log.txt("Pos: "+this.pos);
+		log.txt("PosFin: "+posFin);
+
+		var nExp=new Interp().interpStr(nExpStr);
+
+		if(nExp.esK())
 		{
-			incog+=str.substr
-			(
-				this.pos,
-				posFin
-			);
-			this.pos+=posFin;
+			this.buff=nExp.const;
 		}
-	}
-	this.res=true;
+		else
+		{
+			var nIncNom=this.subExp.length;
+
+			this.subExp.push(nExp);
+			this.monomio.nIncog(nIncNom)
+
+			this.buff=nExp;
+		}
+		log.txt("Fin Subexpresión");
+		this.pos=posFin;
 }
 //Cuando se cierran paréntesis ( ) ).
 Interp.prototype.opParFin=function()
 {
-	if(this.expo&&this.mult)
-	{
-		this.monomio[this.incog]=this.num;
-		this.log.txt('Se (re)determinó '+this.monomio[this.incog]+' para el exponente.');
-	}
-	this.res=false;
+	
 }
 //Cuando se suma ( + ).
 Interp.prototype.opMas=function(letra)

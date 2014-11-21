@@ -1,0 +1,375 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pro",
+				"prototype"
+			],
+			[
+				"_",
+				"_SESSION"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Mon.js",
+			"settings":
+			{
+				"buffer_size": 303,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Exp.js",
+			"settings":
+			{
+				"buffer_size": 2953,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Interp.js",
+			"settings":
+			{
+				"buffer_size": 12281,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 892,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 146.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/index.css",
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/index.html",
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/Log.js",
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/msg",
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/Interp.js",
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/Exp.js",
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/Mon.js",
+		"/opt/lampp/htdocs/Web/lib/Interp/Interp.js",
+		"/opt/lampp/htdocs/Web/lib/rec/rec.js",
+		"/opt/lampp/htdocs/Web/lib/rec/cpArr.js",
+		"/opt/lampp/htdocs/Web/proyectos/polosEnSpd/polosEnSPD.sublime-project",
+		"/home/cactus/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/ControllerBar.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/Hero.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/Game.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/vendors/jquery-2.0.3.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/vendors/backbone.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/ScoreBar.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/vendors/d3.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/vendors/less-1.4.1.min.js",
+		"/opt/lampp/htdocs/Web/javascript-hero-master/javascripts/vendors/underscore.js",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/msg",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/seccs/visor.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/esq/visor.css",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/seccs/visor.css",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/seccs/galeria.css",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/esq/gal_img.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/seccs/galeria.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/php/Gal_HTML_Visor.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/forms/nueva_imagen.html",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/seccs/nImgForm.html",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/esq/visor.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/esq/gal_nImg.html",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/forms/nuevo_coment.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/php/Arr_Gen.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/php/Inc_Esq.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/php/Arr_Gen_HTML.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/php/Obj_Gen_HTML.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/php/NULL_Gen_HTML.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/esq/coment.php",
+		"/home/cactus/.config/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/edetec.sublime-project",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/seccs/login.php",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/footer.css",
+		"/opt/lampp/htdocs/Web/Pasantía/edetec/KWrite.tmTheme",
+		"/home/cactus/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/tmp/Ejemplo.php"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Buff =",
+			"this.incogs",
+			"monomio.incogs",
+			"expoIncog",
+			"oheficiente",
+			"Coment.php",
+			"NULL",
+			"imgMod",
+			"imgEsq",
+			"Inc_Esq",
+			"incPHP",
+			"o"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Mon.js",
+					"settings":
+					{
+						"buffer_size": 303,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								50,
+								50
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Exp.js",
+					"settings":
+					{
+						"buffer_size": 2953,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								157,
+								157
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Interp.js",
+					"settings":
+					{
+						"buffer_size": 12281,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6861,
+								6861
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3528.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 892,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"viso",
+				"seccs/visor.php"
+			],
+			[
+				"vis",
+				"seccs/visor.css"
+			],
+			[
+				"ni",
+				"seccs/nImgForm.html"
+			],
+			[
+				"g",
+				"seccs/galeria.php"
+			],
+			[
+				"gal",
+				"seccs/galeria.css"
+			],
+			[
+				"",
+				"esq/visor.php"
+			],
+			[
+				"vi",
+				"esq/visor.php"
+			],
+			[
+				"img",
+				"esq/gal_img.php"
+			],
+			[
+				"gale",
+				"seccs/galeria.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
