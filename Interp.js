@@ -326,8 +326,8 @@ Interp.prototype.opDiv=function()
 //Cuando se abren paréntesis ( ( ).
 Interp.prototype.opParIni=function()
 {
-		var posFin=this.str.substr(this.pos).indexOf(")")+this.pos;
-		var nExpStr=this.str.substr(this.pos+1,posFin-3);
+		var posFin=this.str.substr(this.pos).indexOf(")")-1;
+		var nExpStr=this.str.substr(this.pos+1,posFin);
 		log.txt("Subexpresión: "+nExpStr);
 		log.txt("Pos: "+this.pos);
 		log.txt("PosFin: "+posFin);
@@ -336,7 +336,8 @@ Interp.prototype.opParIni=function()
 
 		if(nExp.esK())
 		{
-			this.buff=nExp.const;
+			this.buff+=nExp.const;
+			this.mkOps();
 		}
 		else
 		{
@@ -347,8 +348,8 @@ Interp.prototype.opParIni=function()
 
 			this.buff=nExp;
 		}
-		log.txt("Fin Subexpresión");
-		this.pos=posFin;
+		log.txt("Fin Subexpresión con buff ="+this.buff+" y num="+ this.num);
+		this.pos+=posFin+1;
 }
 //Cuando se cierran paréntesis ( ) ).
 Interp.prototype.opParFin=function()
