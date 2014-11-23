@@ -119,6 +119,12 @@ Exp.prototype.insMonomio=function(monomio)
 		}
 	}
 }
+Exp.prototype.nSubExp=function(nExp)
+{
+	this.subExp.push(nExp);
+
+	return this.subExp.length-1;
+}
 Exp.prototype.routh=function()
 {
 	

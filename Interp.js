@@ -329,8 +329,6 @@ Interp.prototype.opParIni=function()
 		var posFin=this.str.substr(this.pos).indexOf(")")-1;
 		var nExpStr=this.str.substr(this.pos+1,posFin);
 		log.txt("Subexpresión: "+nExpStr);
-		log.txt("Pos: "+this.pos);
-		log.txt("PosFin: "+posFin);
 
 		var nExp=new Interp().interpStr(nExpStr);
 
@@ -341,20 +339,22 @@ Interp.prototype.opParIni=function()
 		}
 		else
 		{
-			var nIncNom=this.subExp.length;
+			if(nExp.monomios.length===1)
+			{
+				this.log.txt('Fusionando monomio...');
+				this.monomio.fusMult(nExp.monomios[0]);
+			}
+			else
+			{
+				nIncNom=this.nSubExp(nExp);
 
-			this.subExp.push(nExp);
-			this.monomio.nIncog(nIncNom)
+				this.monomio.nIncog(nIncNom)
 
-			this.buff=nExp;
+				this.incogOp(nIncNom);
+			}
 		}
 		log.txt("Fin Subexpresión con buff ="+this.buff+" y num="+ this.num);
 		this.pos+=posFin+1;
-}
-//Cuando se cierran paréntesis ( ) ).
-Interp.prototype.opParFin=function()
-{
-	
 }
 //Cuando se suma ( + ).
 Interp.prototype.opMas=function(letra)
