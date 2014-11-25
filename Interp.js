@@ -27,7 +27,7 @@ Interp=function()
 	this.str='';
 
 	this.incog=0;
-	this.num=1;
+	this.num=false;
 	this.buff='';
 	this.monomio=new Mon();
 
@@ -62,7 +62,7 @@ Interp.prototype.limpia=function()
 	this.res=false;
 	this.fn=false;
 	this.incog=0;
-	this.num=1;
+	this.num=false;
 	this.buff='';
 	this.monomio=new Mon();
 }
@@ -74,7 +74,10 @@ Interp.prototype.incogOp=function(letra)
 	{
 		if(!this.incog)
 		{
-			this.monomio.cohef=this.num;
+			if(this.num!==false)
+			{
+				this.monomio.cohef=this.num
+			}
 
 			this.log.txt('Coheficiente: '+this.monomio.cohef);
 		}
@@ -185,6 +188,7 @@ Interp.prototype.interpStr=function(str)
 	this.mkOps();
 
 	//Agrego el monomio a la expresión.
+	this.log.txt("Fin Expresion, insertando monomio pendiente");
 	this.expMonomio(this.monomio);
 
 	this.combina(this.expresion);
@@ -209,7 +213,12 @@ Interp.prototype.floatBuff=function()
 	this.num=parseFloat
 	(
 		this.buff
-	)||1;
+	)
+
+	if(isNaN(this.num))
+	{
+		this.num=false;
+	}
 
 	this.buff='';
 
@@ -218,7 +227,7 @@ Interp.prototype.floatBuff=function()
 //Si el monomio es real lo agrega a la expresión.
 Interp.prototype.expMonomio=function()
 {
-	if(this.incog)
+	if(this.monomio.incogs.length)
 	{
 		this.expresion.insMonomio(this.monomio);
 
@@ -255,13 +264,18 @@ Interp.prototype.mkMult=function()
 		if(this.incog)
 		{
 			log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X '+this.buff);
-			this.monomio.cohef*=parseFloat(this.buff);
+			this.monomio.cohef*=parseFloat(this.buff)||1;
 			log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
 		}
 		else
 		{
+			var num=1;
+			if(this.num!==false)
+			{
+				num=this.num;
+			}
 			this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
-			this.buff=parseFloat(this.buff)*this.num;
+			this.buff=parseFloat(this.buff)*num;
 			this.log.txt('Una multiplicación resultó '+this.buff);
 		}
 	}
@@ -385,12 +399,17 @@ Interp.prototype.opParIni=function()
 			
 			nExp.fusiona(this.monomio , this.opPar);
 
-			this.monomio=nExp.monomios[0];
+			this.log.txt("Cantidad monomios nExp="+nExp.monomios.length);
 
-			for(var i=1;i<nExp.monomios.length;i++)
+			this.log.array();
+			this.log.array(nExp.monomios[0]);
+			this.log.array();
+			for(var i=0;i<nExp.monomios.length;i++)
 			{
-				this.expresion.insMonomio(nExp.monomios[i]);
+				this.monomio=nExp.monomios[i];
+				this.expMonomio();
 			}
+
 
 			/*nIncNom=this.expresion.nSubExp(nExp);
 
@@ -410,7 +429,7 @@ Interp.prototype.opMas=function(letra)
 	//Si se estaba procesando un exponente
 	//Lo guardo 
 
-	if(!(this.expo||this.mult||this.res)&&(this.num||this.buff.length))
+	if(!(this.expo||this.mult||this.res))
 	{
 		this.log.txt('opMas: Num = '+this.num+' ; Buff = '+this.buff);
 
@@ -419,7 +438,7 @@ Interp.prototype.opMas=function(letra)
 	}
 	else
 	{
-		this.buff=letra;
+		this.monomio.cohef*=parseFloat(letra+'1');
 	}
 }
 //Cuando se resta ( - ).

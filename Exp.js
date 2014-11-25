@@ -134,6 +134,7 @@ Exp.prototype.fusiona=function(mon , op)
 	}
 	if(this.const)
 	{
+		this.log.txt("Nuevo monomio por Const = "+this.const);
 		nMon=new Mon();
 		nMon.getRefMon(mon);
 

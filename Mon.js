@@ -16,7 +16,6 @@ Mon.prototype.fusiona=function(mon , op)
 	this.cohef=this.opCohef(this.cohef , mon.cohef , op);
 
 	log.txt("Resultado: "+this.cohef);
-
 	for(var i=0;i<mon.incogs.length;i++)
 	{
 		var nIncNom=mon.incogs[i];
@@ -76,6 +75,7 @@ Mon.prototype.opCohef=function(expA,expB,op)
 }
 Mon.prototype.getRefMon=function(rMon)
 {
+	log.array(rMon.incogs);
 	for(var i=0;i<rMon.incogs.length;i++)
 	{
 		nInc=rMon.incogs[i];
