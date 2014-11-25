@@ -1,3 +1,17 @@
+InterpMaxExec=15;
+function indexOf(str,chars)
+{
+	for(var i=0 ; i<str.length ; i++)
+	{
+		for(var j=0 ; j<chars.length ; j++)
+		{
+			if(str[i]==chars[j])
+			{
+				return i;
+			}
+		}
+	}
+}
 Interp=function()
 {
 	//Flags de operaciones en tiempo de interpretación.
@@ -13,7 +27,7 @@ Interp=function()
 	this.str='';
 
 	this.incog=0;
-	this.num=0;
+	this.num=1;
 	this.buff='';
 	this.monomio=new Mon();
 
@@ -122,10 +136,15 @@ Interp.prototype.letraOp=function(letra)
 //Analiza uno a uno los carácteres del string y realiza las operaciones.
 Interp.prototype.interpStr=function(str)
 {
-	if(!window.exec)
+	if(!InterpMaxExec)
 	{
-		window.exec=1;
+		return 0;
 	}
+	else
+	{
+		--InterpMaxExec;
+	}
+	this.id=15-InterpMaxExec;
 	//Creo una expresion si no la hay.
 	if(!this.expresion)
 	{
@@ -149,6 +168,7 @@ Interp.prototype.interpStr=function(str)
 	{
 		//Decido que se va a hacer con el caracter dependiendo de
 		//Si es letra o número.
+		this.log.txt("Pos Interp "+this.id+' = '+this.pos);
 		if(isNaN(this.str[this.pos]))
 		{
 			this.letraOp(this.str[this.pos]);
@@ -275,14 +295,7 @@ Interp.prototype.mkExpo=function()
 		if(this.expoIncog)
 		{
 			//Le asigno el exponente a la incógnita.
-			if(this.monomio[this.incog]===1)
-			{
-				this.monomio[this.incog]=parseFloat(this.buff);
-			}
-			else
-			{
-				this.monomio[this.incog]+=parseFloat(this.buff);
-			}
+			this.monomio[this.incog]+=parseFloat(this.buff)-1;
 
 			this.expoIncog=false;
 			this.buff='';
@@ -326,11 +339,38 @@ Interp.prototype.opDiv=function()
 //Cuando se abren paréntesis ( ( ).
 Interp.prototype.opParIni=function()
 {
-		var posFin=this.str.substr(this.pos).indexOf(")")-1;
-		var nExpStr=this.str.substr(this.pos+1,posFin);
-		log.txt("Subexpresión: "+nExpStr);
+		var nExpStr=this.str.substr(this.pos);
 
-		var nExp=new Interp().interpStr(nExpStr);
+		var i=0;
+		var p=0;
+
+		for(i=0;i<nExpStr.length;i++)
+		{
+			var letra=nExpStr[i];
+
+			if(letra=='(')
+			{
+				p++
+			}
+			if(letra==')')
+			{
+				p--
+			}
+
+			if(p==0)
+			{
+				break;
+			}
+		}		
+		var nExpLen=i;
+
+		var nExpStr=nExpStr.substr(1,i-1);
+		this.log.txt("Subexpresión: "+nExpStr);
+
+		var nInterp=new Interp();
+
+		nInterp.log=this.log;
+		var nExp=nInterp.interpStr(nExpStr);
 
 		if(nExp.esK())
 		{
@@ -339,23 +379,29 @@ Interp.prototype.opParIni=function()
 		}
 		else
 		{
-			if(nExp.monomios.length===1)
-			{
-				this.log.txt('Fusionando monomio...');
-				this.monomio.fusMult(nExp.monomios[0]);
-			}
-			else
-			{
-				nIncNom=this.nSubExp(nExp);
 
-				this.monomio.nIncog(nIncNom)
+			
+			nExp.fusMult(this.monomio);
 
-				this.incogOp(nIncNom);
+			this.monomio=nExp.monomios[0];
+
+			for(var i=1;i<nExp.monomios.length;i++)
+			{
+				this.expresion.insMonomio(nExp.monomios[i]);
 			}
+
+			/*nIncNom=this.expresion.nSubExp(nExp);
+
+			this.monomio.nIncog(nIncNom);
+
+			this.incogOp(nIncNom);*/
 		}
-		log.txt("Fin Subexpresión con buff ="+this.buff+" y num="+ this.num);
-		this.pos+=posFin+1;
+
+		this.pos+=nExpLen;
+
+		this.log.txt("Se continua analizando "+this.pos+' - '+this.str.substr(this.pos+i));
 }
+Interp.prototype.opParFin=function(){}
 //Cuando se suma ( + ).
 Interp.prototype.opMas=function(letra)
 {

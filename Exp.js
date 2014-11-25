@@ -125,6 +125,25 @@ Exp.prototype.nSubExp=function(nExp)
 
 	return this.subExp.length-1;
 }
+Exp.prototype.fusMult=function(mon)
+{
+	for(var i=0;i<this.monomios.length;i++)
+	{
+		this.log.txt('Fusionando monomio...');
+		this.monomios[i].fusMult(mon);
+	}
+	if(this.const)
+	{
+		nMon=new Mon();
+		nMon.getRefMon(mon);
+
+		nMon.cohef*=this.const;
+
+		this.insMonomio(nMon);
+
+		this.const=0;
+	}
+}
 Exp.prototype.routh=function()
 {
 	
