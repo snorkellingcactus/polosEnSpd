@@ -314,6 +314,7 @@ Interp.prototype.mkExpo=function()
 //Prepara una exponenciación ( ^ );
 Interp.prototype.opExpo=function()
 {
+	this.opPar=1;
 	this.expo=true;
 	if(!this.buff.length&&this.incog)
 	{
@@ -325,6 +326,7 @@ Interp.prototype.opExpo=function()
 //Prepara una multiplicación ( * );
 Interp.prototype.opMult=function()
 {
+	this.opPar=3;
 	this.mult=true;
 
 	this.log.txt("Se realizará una multiplicación");
@@ -332,6 +334,7 @@ Interp.prototype.opMult=function()
 //Prepara una división ( / ).
 Interp.prototype.opDiv=function()
 {
+	this.opPar=0;
 	this.div=true;
 
 	this.log.txt("Se realizará una división");
@@ -379,9 +382,8 @@ Interp.prototype.opParIni=function()
 		}
 		else
 		{
-
 			
-			nExp.fusMult(this.monomio);
+			nExp.fusiona(this.monomio , this.opPar);
 
 			this.monomio=nExp.monomios[0];
 

@@ -9,11 +9,13 @@ Mon.prototype.dIncog=function(nIncog)
 	delete this.incogs[this[nIncog]];
 	delete this[nIncog];
 }
-Mon.prototype.fusMult=function(mon)
+Mon.prototype.fusiona=function(mon , op)
 {
 	log.txt("Mon.cohef= "+this.cohef+" ; nMon.cohef= "+mon.cohef);
 
-	this.cohef*=mon.cohef;
+	this.cohef=this.opCohef(this.cohef , mon.cohef , op);
+
+	log.txt("Resultado: "+this.cohef);
 
 	for(var i=0;i<mon.incogs.length;i++)
 	{
@@ -25,8 +27,51 @@ Mon.prototype.fusMult=function(mon)
 			this.nIncog(nIncNom);
 		}
 
-		log.txt("Exponente "+nIncNom+" = "+this[nIncNom]+" + "+mon[nIncNom]);
-		this[nIncNom]+=mon[nIncNom];
+		log.txt("Exponente "+nIncNom+" = "+this[nIncNom]+" | "+mon[nIncNom]);
+		this[nIncNom]=this.opExpo(this[nIncNom] , mon[nIncNom] , op);
+		log.txt("Resultado: "+this[nIncNom]);
+	}
+}
+Mon.prototype.opExpo=function(expA,expB,op)
+{
+	switch(op)
+	{
+		//Dividiendo.
+		case 0 :
+			return expB-expA;
+		break;
+		//Exponenciando.
+		case 1 :
+			return expA*expB;
+		break;
+		//Radicando.
+		case 2 :
+			return expA/expB;
+		break;
+		//Multiplicando.
+		default:
+			return expA+expB;
+	}
+}
+Mon.prototype.opCohef=function(expA,expB,op)
+{
+	switch(op)
+	{
+		//Dividiendo.
+		case 0 :
+			return expB/expA;
+		break;
+		//Exponenciando.
+		case 1 :
+			return expA^expB;
+		break;
+		//Radicando.
+		case 2 :
+			return expA^(1/expB);
+		break;
+		//Multiplicando.
+		default:
+			return expA*expB;
 	}
 }
 Mon.prototype.getRefMon=function(rMon)

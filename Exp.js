@@ -125,19 +125,19 @@ Exp.prototype.nSubExp=function(nExp)
 
 	return this.subExp.length-1;
 }
-Exp.prototype.fusMult=function(mon)
+Exp.prototype.fusiona=function(mon , op)
 {
 	for(var i=0;i<this.monomios.length;i++)
 	{
 		this.log.txt('Fusionando monomio...');
-		this.monomios[i].fusMult(mon);
+		this.monomios[i].fusiona(mon , op);
 	}
 	if(this.const)
 	{
 		nMon=new Mon();
 		nMon.getRefMon(mon);
 
-		nMon.cohef*=this.const;
+		nMon.cohef=nMon.opCohef( this.const, nMon.cohef , op);
 
 		this.insMonomio(nMon);
 
