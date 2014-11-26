@@ -1,4 +1,4 @@
-InterpMaxExec=15;
+InterpMaxExec=0;
 function indexOf(str,chars)
 {
 	for(var i=0 ; i<str.length ; i++)
@@ -202,7 +202,7 @@ Interp.prototype.interpStr=function(str)
 	this.expMonomio(this.monomio);
 
 	//this.combina(this.expresion);
-
+/*
 	this.log.txt('Constante: '+this.expresion.const);
 	this.log.txt('Lista monomios:');
 	this.log.array()
@@ -213,7 +213,7 @@ Interp.prototype.interpStr=function(str)
 	this.log.array(this.expresion.refs.incogs);
 	this.log.array();
 	this.log.sep();
-
+*/
 	return this.expresion;
 };
 //Convierte a número this.buff y lo almacena en this.num.
