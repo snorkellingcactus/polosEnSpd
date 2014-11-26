@@ -240,6 +240,7 @@ Interp.prototype.expMonomio=function()
 	if(typeof(this.num)=='object')
 	{
 		this.expresion.apila(this.num);
+		this.expresion.const=this.num.const;
 	}
 	else
 	{
@@ -314,23 +315,34 @@ Interp.prototype.mkDiv=function()
 {
 	if(this.div)
 	{
-		if(this.incog)
+		if(typeof(this.num)=='object')
 		{
-			log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
-			this.monomio.cohef*=(1/parseFloat(this.buff))||1;
-			log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+			this.log.txt("Fusionando Monomio (Dividiendo)");
+
+			this.num.fusiona(this.buff , 0);
+
+			this.buff=this.num;
 		}
 		else
 		{
-			var num=1;
-			if(this.num!==false)
+			if(this.incog)
 			{
-				num=this.num;
+				log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
+				this.monomio.cohef*=(1/parseFloat(this.buff))||1;
+				log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
 			}
+			else
+			{
+				var num=1;
+				if(this.num!==false)
+				{
+					num=this.num;
+				}
 
-			this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
-			this.buff=(1/parseFloat(this.buff))*num;
-			this.log.txt('Una multiplicación resultó '+this.buff);
+				this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
+				this.buff=(1/parseFloat(this.buff))*num;
+				this.log.txt('Una multiplicación resultó '+this.buff);
+			}
 		}
 	}
 	this.div=false;

@@ -197,12 +197,19 @@ Exp.prototype.fusiona=function(mon , op)
 
 		log.txt('Total:');
 
-			log.array();
-			log.array(this.monomios);
-			log.array();
+		log.array();
+		log.array(this.monomios);
+		log.array();
 
 		if(mon.const)
 		{
+			this.const=tmpExpRef.monomios[0].opCohef
+			(
+				tmpExpRef.const,
+				mon.const,
+				op
+			);
+			log.txt('tmpExpRef.const = '+tmpExpRef.const+' this.const = '+this.const);
 			log.txt("Se operará sobre:");
 			log.array();
 			log.array(tmpExpRef.monomios);
@@ -234,6 +241,9 @@ Exp.prototype.fusiona=function(mon , op)
 			this.log.array();
 			this.log.array(this.monomios);
 			this.log.array();
+
+			this.log.txt("Const: "+this.const);
+
 		}
 	}
 }
