@@ -1,4 +1,4 @@
-InterpMaxExec=0;
+InterpMaxExec=200;
 function indexOf(str,chars)
 {
 	for(var i=0 ; i<str.length ; i++)
