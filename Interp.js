@@ -186,8 +186,8 @@ Interp.prototype.interpStr=function(str)
 
 	//Realizo posibles operaciones pendientes.
 	this.log.txt("this.num= "+this.num+" ; this.buff= "+this.buff);
-	this.mkOps();
 
+	this.mkOps();
 	//Agrego el monomio a la expresión.
 	this.log.txt("Fin Expresion, insertando monomio pendiente");
 
@@ -299,22 +299,35 @@ Interp.prototype.mkMult=function()
 		}
 		else
 		{
-			if(this.incog)
+			if(typeof(this.buff)=='object')
 			{
-				log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X '+this.buff);
-				this.monomio.cohef*=parseFloat(this.buff)||1;
-				log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+				this.buff.fusConst
+				(
+					this.num,
+					3
+				)
+
+				this.num=this.buff;
 			}
 			else
 			{
-				var num=1;
-				if(this.num!==false)
+				if(this.incog)
 				{
-					num=this.num;
+					log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X '+this.buff);
+					this.monomio.cohef*=parseFloat(this.buff)||1;
+					log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
 				}
-				this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
-				this.buff=parseFloat(this.buff)*num;
-				this.log.txt('Una multiplicación resultó '+this.buff);
+				else
+				{
+					var num=1;
+					if(this.num!==false)
+					{
+						num=this.num;
+					}
+					this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
+					this.buff=parseFloat(this.buff)*num;
+					this.log.txt('Una multiplicación resultó '+this.buff);
+				}
 			}
 		}
 	}
@@ -327,31 +340,56 @@ Interp.prototype.mkDiv=function()
 	{
 		if(typeof(this.num)=='object')
 		{
-			this.log.txt("Fusionando Monomio (Dividiendo)");
+			if(typeof(this.buff)!='object')
+			{
+				this.log.txt("Fusionando Monomio Con Constante (Dividiendo)");
 
-			this.num.fusiona(this.buff , 0);
+				this.num.fusConst
+				(
+					1/parseFloat(this.buff),
+					3
+				);
+			}
+			else
+			{
+				this.log.txt("Fusionando Monomio (Dividiendo)");
 
+				this.num.fusiona(this.buff , 0);
+			}
 			this.buff=this.num;
 		}
 		else
 		{
-			if(this.incog)
+			if(typeof(this.buff)=='object')
 			{
-				log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
-				this.monomio.cohef*=(1/parseFloat(this.buff))||1;
-				log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+				this.buff.fusConst
+				(
+					this.num,
+					0
+				)
+				this.buff.const=1/this.buff.const;
+				this.num=this.buff;
 			}
 			else
 			{
-				var num=1;
-				if(this.num!==false)
+				if(this.incog)
 				{
-					num=this.num;
+					log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
+					this.monomio.cohef*=(1/parseFloat(this.buff))||1;
+					log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
 				}
+				else
+				{
+					var num=1;
+					if(this.num!==false)
+					{
+						num=this.num;
+					}
 
-				this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
-				this.buff=(1/parseFloat(this.buff))*num;
-				this.log.txt('Una multiplicación resultó '+this.buff);
+					this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
+					this.buff=(1/parseFloat(this.buff))*num;
+					this.log.txt('Una multiplicación resultó '+this.buff);
+				}
 			}
 		}
 	}
@@ -389,7 +427,6 @@ Interp.prototype.mkExpo=function()
 //Prepara una exponenciación ( ^ );
 Interp.prototype.opExpo=function()
 {
-	this.opPar=1;
 	this.expo=true;
 	if(!this.buff.length&&this.incog)
 	{
@@ -401,7 +438,6 @@ Interp.prototype.opExpo=function()
 //Prepara una multiplicación ( * );
 Interp.prototype.opMult=function()
 {
-	this.opPar=3;
 	this.mult=true;
 
 	this.log.txt("Se realizará una multiplicación");
@@ -409,7 +445,6 @@ Interp.prototype.opMult=function()
 //Prepara una división ( / ).
 Interp.prototype.opDiv=function()
 {
-	this.opPar=0;
 	this.div=true;
 
 	this.log.txt("Se realizará una división");
@@ -453,17 +488,9 @@ Interp.prototype.opParIni=function()
 		if(nExp.esK())
 		{
 			this.buff+=nExp.const;
-			this.mkOps();
 		}
 		else
 		{
-			var fus=this.monomio;
-
-			if(typeof this.num=='object')
-			{
-				fus=this.num;
-			}
-
 			this.buff=nExp;
 		}
 

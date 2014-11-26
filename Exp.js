@@ -233,7 +233,7 @@ Exp.prototype.fusConstMon=function(mon , op)
 		nMon=new Mon();
 		nMon.getRefMon(mon);
 
-		nMon.cohef=nMon.opCohef( this.const, nMon.cohef , op);
+		nMon.cohef=nMon.opCohef( nMon.cohef , this.const , op);
 
 		this.insMonomio(nMon);
 
@@ -271,7 +271,7 @@ Exp.prototype.fusConst=function(nConst , op)
 			op
 		);
 
-		
+
 		this.log.txt("Res: ");
 		this.log.array();
 		this.log.array(this.monomios[i]);

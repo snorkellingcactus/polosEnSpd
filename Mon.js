@@ -46,7 +46,7 @@ Mon.prototype.opExpo=function(expA,expB,op)
 	{
 		//Dividiendo.
 		case 0 :
-			return expB-expA;
+			return expA-expB;
 		break;
 		//Exponenciando.
 		case 1 :
@@ -67,7 +67,7 @@ Mon.prototype.opCohef=function(expA,expB,op)
 	{
 		//Dividiendo.
 		case 0 :
-			return expB/expA;
+			return expA/expB;
 		break;
 		//Exponenciando.
 		case 1 :
