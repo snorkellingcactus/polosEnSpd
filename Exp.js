@@ -116,7 +116,6 @@ Exp.prototype.insMonomio=function(monomio)
 
 			log.txt("ID Monomio Insertado: "+incogStr);
 		}
-
 		if(this.adMonRef(monomio))
 		{
 			this.monomios.push(monomio);
@@ -199,7 +198,6 @@ Exp.prototype.fusiona=function(mon , op)
 		log.array(this.monomios);
 		log.array();
 	}
-
 	if(mon.const)
 	{
 		tmpExpRef.fusConst(mon.const , op);
@@ -232,10 +230,9 @@ Exp.prototype.fusConstMon=function(mon , op)
 		nMon.getRefMon(mon);
 
 		nMon.cohef=nMon.opCohef( nMon.cohef , this.const , op);
+		this.const=0;
 
 		this.insMonomio(nMon);
-
-		this.const=0;
 	}
 }
 Exp.prototype.fusConst=function(nConst , op)

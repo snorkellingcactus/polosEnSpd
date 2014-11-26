@@ -196,11 +196,11 @@ Interp.prototype.interpStr=function(str)
 
 	this.mkOps();
 	//Agrego el monomio a la expresión.
-	this.log.txt("Fin Expresion, insertando monomio pendiente");
+	this.log.txt("Fin Expresion, insertando monomio pendiente:");
 
 	this.expMonomio(this.monomio);
 
-	this.combina(this.expresion);
+	//this.combina(this.expresion);
 
 	this.log.txt('Constante: '+this.expresion.const);
 	this.log.txt('Lista monomios:');
@@ -246,8 +246,9 @@ Interp.prototype.expMonomio=function()
 {
 	if(typeof(this.num)=='object')
 	{
-		this.expresion.apila(this.num);
+		log.txt('Apilando resultado');
 		this.expresion.const=this.num.const;
+		this.expresion.apila(this.num);
 	}
 	else
 	{
@@ -750,7 +751,7 @@ function outinput()
 
 	if(inputs[1].value.length)
 	{
-		str='('+inputs[0]+')*('+inputs[1].value+')';
+		str='('+inputs[0].value+')*('+inputs[1].value+')';
 	}
 	else
 	{
