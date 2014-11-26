@@ -24,6 +24,7 @@ Log.prototype.sep=function()
 };
 Log.prototype.br=function(num)
 {
+	this.isAble();
 	for(var j=0;j<num;j++)
 	{
 		this.buff+="<br>";
@@ -31,6 +32,7 @@ Log.prototype.br=function(num)
 }
 Log.prototype.txt=function()
 {
+	this.isAble();
 	for(var j=0;j<arguments.length;j++)
 	{
 		this.buff+="<p>"+arguments[j]+"</p>";

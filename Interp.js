@@ -49,7 +49,7 @@ Interp=function()
 }
 //Función que borra espacios y puntos de un string
 //que va a ser interpretado.
-Interp.prototype.clrStr=function(str)
+Interp.prototype.clrStr=function()
 {
 	this.log.txt("Aplicando RegExp");
 	this.str=this.str.replace( /\s/g , "");
@@ -159,8 +159,9 @@ Interp.prototype.interpStr=function(str)
 
 	this.str=str;
 
-	log.txt("Entrada:"+this.str);	
-	this.clrStr(this.str);		//Borro espacios y puntos.
+	log.txt("Entrada:"+this.str);
+
+	this.clrStr();		//Borro espacios y puntos.
 
 	this.log.txt("Comenzando a interpretar cadena");
 	this.log.txt("Entrada: "+this.str);
@@ -478,11 +479,14 @@ Interp.prototype.opParIni=function()
 		var nExpLen=i;
 
 		var nExpStr=nExpStr.substr(1,i-1);
-		this.log.txt("Subexpresión: "+nExpStr);
+		this.log.fn("Subexpresión: "+nExpStr);
 
+		if(!nExpStr.replace)
+			{return 0}
 		var nInterp=new Interp();
 
 		nInterp.log=this.log;
+
 		var nExp=nInterp.interpStr(nExpStr);
 
 		if(nExp.esK())
@@ -719,27 +723,26 @@ function outinput()
 {
 	document.getElementsByName("res")[0].innerHTML=""
 	log.buff="";
+	log.enable=false;
 
-	var pol=procesaPol(document.getElementsByName("pol")[0].value);
+	procesaPol
+	(
+			'('+document.getElementsByName("pol")[0].value+')/'+
+			'('+document.getElementsByName("pol")[1].value+')'
+	);
+
+	log.enable=true;
+
 	log.sep();
 	log.fn("Respuesta:");
-	
-	for(var j=0;j<pol.length;j++)
-	{
-		log.array()
-		if(pol[j])
-		{
-			for(var i=0;i<pol[j].length;i++)
-			{
-				log.array(pol[j][i]);
-			}
-		}
-		else
-		{
-			log.array("Indefinido");
-		};
-		log.array();
-	};
+
+	log.fn('G(P) * H(P):');
+	log.txt('Constante: '+Expresion.const);
+
+	log.array()
+	log.array(Expresion.monomios);
+	log.array()
+
 	document.getElementsByName("res")[0].innerHTML=log.buff;
 }
 function verifEstado(polArr){};
