@@ -1,3 +1,16 @@
+function clrArr(arr)
+{
+	nArr=[];
+	for(clave in arr)
+	{
+		if(arr[clave])
+		{
+			nArr.push(arr[clave]);
+		}
+	}
+
+	return nArr;
+}
 Exp=function()
 {
 	//Distintos arrays que permiten referenciar monomios
@@ -22,6 +35,21 @@ Exp.prototype.interpStr=function(str)
 
 	return interp.interpStr(str);
 }
+Exp.prototype.genMonID=function(mon)
+{
+	var incogStr='';
+
+	for(var i=0;i<mon.incogs.length;i++)
+	{
+		var incogAct=mon.incogs[i];
+
+		incogAct+=mon[incogAct];
+
+		incogStr+=incogAct;
+	}
+
+	return incogStr;
+}
 Exp.prototype.insMonomio=function(monomio)
 {
 	var incogStr='';
@@ -36,6 +64,7 @@ Exp.prototype.insMonomio=function(monomio)
 			var incogAct=monomio.incogs[i];
 
 			incogAct+=monomio[incogAct];
+			incogStr+=incogAct;
 
 			//Verifico si el monomio tiene a P.
 			if(monomio.p)
@@ -98,24 +127,12 @@ Exp.prototype.insMonomio=function(monomio)
 				}
 			}
 
-			incogStr+=incogAct;
-			log.txt(incogStr);
+			log.txt("ID Monomio Insertado: "+incogStr);
 		}
-		//Si no existía esa clave en el array la creo.
-		if(!this.refs.incogs[incogStr])
+
+		if(this.adMonRef(monomio))
 		{
-			this.refs.incogs[incogStr]=[];
-			
-			//Si agrego el ID del monomio a la lista de referencias por incógnitas.
-			this.refs.incogs[incogStr].push(this.monomios.length);
-			//Agrego el monomio a la expresión.
 			this.monomios.push(monomio);
-		}
-		else
-		{
-			//Si ya existe un monomio con mismas incognitas a mismos exponentes,
-			//multiplico sus coheficientes.
-			this.monomios[this.refs.incogs[incogStr]].cohef+=monomio.cohef;
 		}
 	}
 }
@@ -127,10 +144,110 @@ Exp.prototype.nSubExp=function(nExp)
 }
 Exp.prototype.fusiona=function(mon , op)
 {
+	if(mon instanceof Mon)
+	{
+		this.fusionaMon(mon , op);
+	}
+	else
+	{
+		var tmpExpRef=new Exp();
+		tmpExpRef.apila(this);
+		tmpExpRef.const=this.const;
+
+		this.fusionaMon(mon.monomios[0] , op)
+
+
+		this.log.txt('Guardando expresion:');
+		this.log.array();
+		this.log.array(tmpExpRef.monomios);
+		this.log.array();
+
+
+		this.log.txt('Resolviendo primer multiplicacion:');
+		this.log.array();
+		this.log.array(this.monomios);
+		this.log.array();
+		for(var i=1;i<mon.monomios.length;i++)
+		{
+			tmpExp=new Exp();
+			tmpExp.apila(tmpExpRef);
+			tmpExp.const=tmpExpRef.const;
+
+			log.txt('Resolviendo siguiente multiplicacion: ');
+			log.array();
+			log.array(tmpExp.monomios);
+			log.array();
+
+			log.txt('Op: '+op);
+
+			log.array();
+			log.array(mon.monomios[i]);
+			log.array();
+
+			tmpExp.fusionaMon(mon.monomios[i] , op);
+
+			log.txt('Resultado:');
+
+			log.array();
+			log.array(tmpExp.monomios);
+			log.array();
+
+			this.apila(tmpExp);
+		}
+
+		log.txt('Total:');
+
+			log.array();
+			log.array(this.monomios);
+			log.array();
+
+		if(mon.const)
+		{
+			log.txt("Se operará sobre:");
+			log.array();
+			log.array(tmpExpRef.monomios);
+			log.array();
+
+			for(var i=0;i<tmpExpRef.monomios.length;i++)
+			{
+				this.log.txt("Nuevo monomio por Const = "+mon.const);
+
+				this.log.txt("Const =");
+				this.log.txt(""+tmpExpRef.monomios[i].cohef);
+				this.log.txt("Op: "+op);
+				this.log.txt(""+mon.const);
+				tmpExpRef.monomios[i].cohef=tmpExpRef.monomios[i].opCohef
+				(
+					tmpExpRef.monomios[i].cohef,
+					mon.const,
+					op
+				);
+				this.log.txt("Res: ");
+				this.log.array();
+				this.log.array(tmpExpRef.monomios[i]);
+				this.log.array();
+			}
+
+			this.apila(tmpExpRef);
+
+			this.log.txt("Total:");
+			this.log.array();
+			this.log.array(this.monomios);
+			this.log.array();
+		}
+	}
+}
+Exp.prototype.fusionaMon=function(mon , op)
+{
 	for(var i=0;i<this.monomios.length;i++)
 	{
 		this.log.txt('Fusionando monomio...');
+
+		this.rmMonRef(this.monomios[i]);
+
 		this.monomios[i].fusiona(mon , op);
+
+		this.adMonRef(this.monomios[i] , i);
 	}
 	if(this.const)
 	{
@@ -143,6 +260,67 @@ Exp.prototype.fusiona=function(mon , op)
 		this.insMonomio(nMon);
 
 		this.const=0;
+	}
+}
+Exp.prototype.rmMonRef=function(mon)
+{
+	var monID=this.genMonID(mon);
+
+	this.refs.incogs[monID]=mon;
+
+	this.refs.incogs=clrArr
+	(
+		this.refs.incogs
+	);
+
+	log.txt('Registro: '+monID);
+	log.array();
+	log.array(this.refs.incogs);
+	log.array();
+}
+Exp.prototype.adMonRef=function(mon , nMon)
+{
+	var monID=this.genMonID(mon);
+
+	//Si no existía esa clave en el array la creo.
+	if(!this.refs.incogs[monID])
+	{
+		this.refs.incogs[monID]=mon;
+
+		return 1;
+	}
+	else
+	{
+		this.refs.incogs[monID].cohef+=mon.cohef;
+
+		log.txt('Ya existe un monomio con '+monID);
+
+		return 0;
+	}
+}
+Exp.prototype.apila=function(mon)
+{
+	if(mon instanceof Mon)
+	{
+		this.apilaMon(mon);
+	}
+	else
+	{
+		this.apilaExpMon(mon);
+	}
+}
+Exp.prototype.apilaMon=function(aMon)
+{
+	nMon=new Mon();
+	nMon.getRefMon(aMon);
+
+	this.insMonomio(nMon);
+}
+Exp.prototype.apilaExpMon=function(aExp)
+{
+	for(var i=0;i<aExp.monomios.length;i++)
+	{
+		this.apilaMon(aExp.monomios[i]);
 	}
 }
 Exp.prototype.routh=function()

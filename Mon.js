@@ -11,6 +11,15 @@ Mon.prototype.dIncog=function(nIncog)
 }
 Mon.prototype.fusiona=function(mon , op)
 {
+	if(arguments[2])
+	{
+		nMon=new Mon();
+		nMon.getRefMon(this);
+
+		nMon.fusiona(mon , op);
+
+		return nMon;
+	}
 	log.txt("Mon.cohef= "+this.cohef+" ; nMon.cohef= "+mon.cohef);
 
 	this.cohef=this.opCohef(this.cohef , mon.cohef , op);
@@ -75,10 +84,9 @@ Mon.prototype.opCohef=function(expA,expB,op)
 }
 Mon.prototype.getRefMon=function(rMon)
 {
-	log.array(rMon.incogs);
 	for(var i=0;i<rMon.incogs.length;i++)
 	{
-		nInc=rMon.incogs[i];
+		var nInc=rMon.incogs[i];
 
 		this.nIncog(nInc);
 
@@ -88,7 +96,6 @@ Mon.prototype.getRefMon=function(rMon)
 	this.cohef=rMon.cohef;
 }
 Mon.prototype.fusDiv=function(){}
-Mon.prototype.fus
 Mon.prototype.nIncog=function(incNom)
 {
 	this.incogs.push(incNom);
