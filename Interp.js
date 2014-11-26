@@ -247,7 +247,11 @@ Interp.prototype.expMonomio=function()
 	if(typeof(this.num)=='object')
 	{
 		log.txt('Apilando resultado');
-		this.expresion.const=this.num.const;
+
+		if(this.num.const)
+		{
+			this.expresion.const+=this.num.const;
+		}
 		this.expresion.apila(this.num);
 	}
 	else
@@ -502,14 +506,11 @@ Interp.prototype.opParIni=function()
 		var nExpStr=nExpStr.substr(1,i-1);
 		this.log.fn("Subexpresión: "+nExpStr);
 
-		if(!nExpStr.replace)
-			{return 0}
 		var nInterp=new Interp();
 
 		nInterp.log=this.log;
 
 		var nExp=nInterp.interpStr(nExpStr);
-
 		if(nExp.esK())
 		{
 			this.buff+=nExp.const;
@@ -521,6 +522,7 @@ Interp.prototype.opParIni=function()
 
 		this.pos+=nExpLen;
 
+		this.log.txt('Constantee = '+this.expresion.const);
 		this.log.txt("Se continua analizando "+this.pos+' - '+this.str.substr(this.pos+i));
 }
 Interp.prototype.opParFin=function(){}
