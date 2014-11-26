@@ -95,6 +95,7 @@ Interp.prototype.incogOp=function(letra)
 		this.div=false;
 	}
 	this.log.txt('Exponente: '+this.monomio[letra]);
+	this.log.txt('Coheficiente: '+this.monomio.cohef);
 	//Secciono incógnita.
 	this.incog=letra;
 }
