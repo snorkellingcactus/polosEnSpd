@@ -313,11 +313,18 @@ Interp.prototype.mkMult=function()
 		{
 			if(typeof(this.buff)=='object')
 			{
-				this.buff.fusConst
-				(
-					this.num,
-					3
-				)
+				if(this.num===false)
+				{
+					this.buff.fusiona(this.monomio , 3);
+				}
+				else
+				{
+					this.buff.fusConst
+					(
+						this.num,
+						3
+					)
+				}
 
 				this.num=this.buff;
 			}
@@ -375,12 +382,24 @@ Interp.prototype.mkDiv=function()
 		{
 			if(typeof(this.buff)=='object')
 			{
-				this.buff.fusConst
-				(
-					this.num,
-					0
-				)
-				this.buff.const=1/this.buff.const;
+				if(this.num===false)
+				{
+					this.buff.fusiona(this.monomio , 0);
+				}
+				else
+				{
+					this.buff.fusConst
+					(
+						this.num,
+						0
+					)
+				}
+
+
+				if(this.buff.const)
+				{
+					this.buff.const=1/this.buff.const;
+				}
 				this.num=this.buff;
 			}
 			else

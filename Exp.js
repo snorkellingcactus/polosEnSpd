@@ -223,7 +223,7 @@ Exp.prototype.fusionaMon=function(mon , op)
 }
 Exp.prototype.fusConstMon=function(mon , op)
 {
-	if(this.const)
+	if(this.const!==false)
 	{
 		this.log.txt("Nuevo monomio por Const = "+this.const);
 		nMon=new Mon();
