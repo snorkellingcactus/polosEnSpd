@@ -1,3 +1,29 @@
+function clrArr(arr)
+{
+	nArr=[];
+	for(clave in arr)
+	{
+		if(arr[clave])
+		{
+			nArr.push(arr[clave]);
+		}
+	}
+
+	return nArr;
+}
+function clrLst(arr)
+{
+	var nArr=[];
+	for(var i=0;i<arr.length;i++)
+	{
+		if(arr[i])
+		{
+			nArr.push(arr[i]);
+		}
+	}
+
+	return nArr;
+}
 Mon=function()
 {
 	this.cohef=1;
@@ -38,7 +64,13 @@ Mon.prototype.fusiona=function(mon , op)
 		log.txt("Exponente "+nIncNom+" = "+this[nIncNom]+" | "+mon[nIncNom]);
 		this[nIncNom]=this.opExpo(this[nIncNom] , mon[nIncNom] , op);
 		log.txt("Resultado: "+this[nIncNom]);
+
+		if(!this[nIncNom])
+		{
+			this.dIncog(nIncNom);
+		}
 	}
+	this.incogs=clrLst(this.incogs);
 }
 Mon.prototype.opExpo=function(expA,expB,op)
 {

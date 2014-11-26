@@ -1,16 +1,3 @@
-function clrArr(arr)
-{
-	nArr=[];
-	for(clave in arr)
-	{
-		if(arr[clave])
-		{
-			nArr.push(arr[clave]);
-		}
-	}
-
-	return nArr;
-}
 Exp=function()
 {
 	//Distintos arrays que permiten referenciar monomios
@@ -53,7 +40,7 @@ Exp.prototype.genMonID=function(mon)
 Exp.prototype.insMonomio=function(monomio)
 {
 	var incogStr='';
-	if(monomio.incogs)
+	if(monomio.incogs.length)
 	{
 		//Ordeno incognitas por orden alfabético.
 		monomio.incogs=monomio.incogs.sort();
@@ -135,6 +122,17 @@ Exp.prototype.insMonomio=function(monomio)
 			this.monomios.push(monomio);
 		}
 	}
+	else
+	{
+		log.txt('Eliminado Monomio:');
+		log.array();
+		log.array(monomio);
+		log.array();
+
+		this.const+=monomio.cohef;
+
+		log.txt('Nueva Constante: '+this.const);
+	}
 }
 Exp.prototype.nSubExp=function(nExp)
 {
@@ -163,7 +161,7 @@ Exp.prototype.fusiona=function(mon , op)
 		this.log.array();
 
 
-		this.log.txt('Resolviendo primer multiplicacion:');
+		this.log.txt('Resolviendo primer fusion:');
 		this.log.array();
 		this.log.array(this.monomios);
 		this.log.array();
@@ -173,7 +171,7 @@ Exp.prototype.fusiona=function(mon , op)
 			tmpExp.apila(tmpExpRef);
 			tmpExp.const=tmpExpRef.const;
 
-			log.txt('Resolviendo siguiente multiplicacion: ');
+			log.txt('Resolviendo siguiente fusion: ');
 			log.array();
 			log.array(tmpExp.monomios);
 			log.array();
@@ -207,7 +205,7 @@ Exp.prototype.fusiona=function(mon , op)
 		tmpExpRef.fusConst(mon.const , op);
 
 		this.apila(tmpExpRef);
-		this.const=tmpExpRef.const;
+		this.const+=tmpExpRef.const;
 	}
 }
 Exp.prototype.fusionaMon=function(mon , op)
@@ -218,7 +216,7 @@ Exp.prototype.fusionaMon=function(mon , op)
 
 		this.rmMonRef(this.monomios[i]);
 
-		this.monomios[i].fusiona(mon , op);
+		this.monomios[i].fusiona(mon , op)
 
 		this.adMonRef(this.monomios[i] , i);
 	}
