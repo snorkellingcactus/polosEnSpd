@@ -281,9 +281,19 @@ Interp.prototype.mkMult=function()
 	{
 		if(typeof(this.num)=='object')
 		{
-			this.log.txt("Fusionando Monomio (Multiplicando)");
-
-			this.num.fusiona(this.buff , 3);
+			if(typeof(this.buff)!='object')
+			{
+				this.num.fusConst
+				(
+					parseFloat(this.buff),
+					3
+				);
+			}
+			else
+			{
+				this.log.txt("Fusionando Monomio (Multiplicando)");
+				this.num.fusiona(this.buff , 3);
+			}
 
 			this.buff=this.num;
 		}

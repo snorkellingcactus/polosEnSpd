@@ -200,51 +200,14 @@ Exp.prototype.fusiona=function(mon , op)
 		log.array();
 		log.array(this.monomios);
 		log.array();
+	}
 
-		if(mon.const)
-		{
-			this.const=tmpExpRef.monomios[0].opCohef
-			(
-				tmpExpRef.const,
-				mon.const,
-				op
-			);
-			log.txt('tmpExpRef.const = '+tmpExpRef.const+' this.const = '+this.const);
-			log.txt("Se operará sobre:");
-			log.array();
-			log.array(tmpExpRef.monomios);
-			log.array();
+	if(mon.const)
+	{
+		tmpExpRef.fusConst(mon.const , op);
 
-			for(var i=0;i<tmpExpRef.monomios.length;i++)
-			{
-				this.log.txt("Nuevo monomio por Const = "+mon.const);
-
-				this.log.txt("Const =");
-				this.log.txt(""+tmpExpRef.monomios[i].cohef);
-				this.log.txt("Op: "+op);
-				this.log.txt(""+mon.const);
-				tmpExpRef.monomios[i].cohef=tmpExpRef.monomios[i].opCohef
-				(
-					tmpExpRef.monomios[i].cohef,
-					mon.const,
-					op
-				);
-				this.log.txt("Res: ");
-				this.log.array();
-				this.log.array(tmpExpRef.monomios[i]);
-				this.log.array();
-			}
-
-			this.apila(tmpExpRef);
-
-			this.log.txt("Total:");
-			this.log.array();
-			this.log.array(this.monomios);
-			this.log.array();
-
-			this.log.txt("Const: "+this.const);
-
-		}
+		this.apila(tmpExpRef);
+		this.const=tmpExpRef.const;
 	}
 }
 Exp.prototype.fusionaMon=function(mon , op)
@@ -259,6 +222,11 @@ Exp.prototype.fusionaMon=function(mon , op)
 
 		this.adMonRef(this.monomios[i] , i);
 	}
+
+	this.fusConstMon(mon , op);
+}
+Exp.prototype.fusConstMon=function(mon , op)
+{
 	if(this.const)
 	{
 		this.log.txt("Nuevo monomio por Const = "+this.const);
@@ -270,6 +238,44 @@ Exp.prototype.fusionaMon=function(mon , op)
 		this.insMonomio(nMon);
 
 		this.const=0;
+	}
+}
+Exp.prototype.fusConst=function(nConst , op)
+{
+	this.const=Mon.prototype.opCohef
+	(
+		this.const,
+		nConst,
+		op
+	);
+
+	log.txt("Se operará sobre:");
+	log.array();
+	log.array(this.monomios);
+	log.array();
+
+	for(var i=0;i<this.monomios.length;i++)
+	{
+		this.log.txt("Nuevo monomio por Const = "+nConst);
+
+		this.log.txt("Const =");
+		this.log.txt(""+this.monomios[i].cohef);
+		this.log.txt("Op: "+op);
+		this.log.txt(""+nConst);
+
+
+		this.monomios[i].cohef=Mon.prototype.opCohef
+		(
+			this.monomios[i].cohef,
+			nConst,
+			op
+		);
+
+		
+		this.log.txt("Res: ");
+		this.log.array();
+		this.log.array(this.monomios[i]);
+		this.log.array();
 	}
 }
 Exp.prototype.rmMonRef=function(mon)
