@@ -78,8 +78,6 @@ Interp.prototype.incogOp=function(letra)
 			{
 				this.monomio.cohef=this.num
 			}
-
-			this.log.txt('Coheficiente: '+this.monomio.cohef);
 		}
 
 		this.monomio.nIncog(letra);
@@ -87,8 +85,16 @@ Interp.prototype.incogOp=function(letra)
 		this.log.txt("Se trata de una nueva incógnita");
 		this.log.txt("creada nueva incógnita "+letra);
 	}
-
 	this.monomio[letra]++;
+
+	if(this.div)
+	{
+		this.monomio[letra]*=-1;
+
+		log.txt("Div:false");
+		this.div=false;
+	}
+	this.log.txt('Exponente: '+this.monomio[letra]);
 	//Secciono incógnita.
 	this.incog=letra;
 }
@@ -339,6 +345,7 @@ Interp.prototype.mkDiv=function()
 {
 	if(this.div)
 	{
+		this.div=false;
 		if(typeof(this.num)=='object')
 		{
 			if(typeof(this.buff)!='object')
@@ -375,26 +382,39 @@ Interp.prototype.mkDiv=function()
 			{
 				if(this.incog)
 				{
-					log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
-					this.monomio.cohef*=(1/parseFloat(this.buff))||1;
-					log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+					if(isNaN(parseFloat(this.buff)))
+					{
+						this.monomio[this.incog]*=-1;
+					}
+					else
+					{
+						log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
+						this.monomio.cohef*=(1/parseFloat(this.buff))||1;
+						log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+					}
 				}
 				else
 				{
-					var num=1;
-					if(this.num!==false)
+					if(!isNaN(parseFloat(this.buff)))
 					{
-						num=this.num;
-					}
+						var num=1;
+						if(this.num!==false)
+						{
+							num=this.num;
+						}
 
-					this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
-					this.buff=(1/parseFloat(this.buff))*num;
-					this.log.txt('Una multiplicación resultó '+this.buff);
+						this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
+						this.buff=(1/parseFloat(this.buff))*num;
+						this.log.txt('Una Division resultó '+this.buff);
+					}
+					else
+					{
+						this.div=true;
+					}
 				}
 			}
 		}
 	}
-	this.div=false;
 }
 //Realiza una exponenciación.
 Interp.prototype.mkExpo=function()
@@ -404,7 +424,7 @@ Interp.prototype.mkExpo=function()
 		if(this.expoIncog)
 		{
 			//Le asigno el exponente a la incógnita.
-			this.monomio[this.incog]+=parseFloat(this.buff)-1;
+			this.monomio[this.incog]*=parseFloat(this.buff);
 
 			this.expoIncog=false;
 			this.buff='';
@@ -725,11 +745,19 @@ function outinput()
 	log.buff="";
 	log.enable=false;
 
-	procesaPol
-	(
-			'('+document.getElementsByName("pol")[0].value+')/'+
-			'('+document.getElementsByName("pol")[1].value+')'
-	);
+	var inputs=document.getElementsByName("pol");
+	var str='';
+
+	if(inputs[1].value.length)
+	{
+		str='('+inputs[0]+')*('+inputs[1].value+')';
+	}
+	else
+	{
+		str='('+inputs[0].value+')';
+	}
+
+	procesaPol(str);
 
 	log.enable=true;
 
