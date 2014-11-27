@@ -12,12 +12,78 @@
 		<script type="text/javascript" src="./Interp.js"></script>
 	</head>
 	<body>
+		<p>K<input type="text" autofocus="autofocus" name="pol"/></p>;
 		<p>G(P): <input type="text" autofocus="autofocus" name="pol"/></p>;
-		<p>H(P): <input type="text" autofocus="autofocus" name="pol"/></p>;
+		<p><input type="text" autofocus="autofocus" name="pol"/></p>;
+		<p>H(P) <input type="text" autofocus="autofocus" name="pol"/></p>;
+		<p><input type="text" autofocus="autofocus" name="pol"/></p>;
 
 		<p name="res">Res: </p>
 		
 		<script type="text/javascript">
+		Interps=[];
+		Expresiones=[];
+		log=new Log();
+
+			setInterval
+			(
+				function()
+				{
+					if(log.cambio)
+					{
+						document.getElementsByName("res")[0].innerHTML=log.buff;
+					}
+					log.cambio=false;
+				},200
+			);
+			function outinput()
+			{
+
+				document.getElementsByName("res")[0].innerHTML=""
+				log.buff="";
+				log.enable=false;
+				var inputs=document.getElementsByName("pol");
+
+				for(var i=0;i<inputs.length;i++)
+				{
+					Interps[i]=new Interp();
+					Interps[i].log=log;
+					if(inputs[i].value.length)
+					{
+						Expresiones[i]=Interps[i].interpStr
+						(
+							'('+inputs[i].value+')'
+						);
+					}
+					else
+					{
+						Expresiones[i]=new Exp();
+					}
+				}
+				log.enable=true;
+				log.sep();
+				log.fn("Respuesta:");
+
+				K=Expresiones[0];
+
+				GPA=Expresiones[1];
+				GPB=Expresiones[2];
+				HPA=Expresiones[3];
+				HPB=Expresiones[4];
+
+				for(var i=0;i<Expresiones.length;i++)
+				{
+					if(inputs[i].value.length)
+					{
+						log.fn('Expresion '+i+' :');
+						log.txt('Constante: '+Expresiones[i].const);
+
+						log.array()
+						log.array(Expresiones[i].monomios);
+						log.array()
+					}
+				}
+			}
 			document.getElementsByName("pol")[0].addEventListener
 			(
 				"keydown",

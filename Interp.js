@@ -146,15 +146,7 @@ Interp.prototype.letraOp=function(letra)
 //Analiza uno a uno los carácteres del string y realiza las operaciones.
 Interp.prototype.interpStr=function(str)
 {
-	if(!InterpMaxExec)
-	{
-		return 0;
-	}
-	else
-	{
-		--InterpMaxExec;
-	}
-	this.id=15-InterpMaxExec;
+	this.id=15;
 	//Creo una expresion si no la hay.
 	if(!this.expresion)
 	{
@@ -749,51 +741,4 @@ function verifSignoCohef(polArr)
 
 	return cantidad;
 };
-
-interp=new Interp();
-log=interp.log;
-
-function procesaPol(txt)
-{
-	Expresion=interp.interpStr(txt);
-	//proc=reordenaCohef(proc);
-	log.sep();
-	//pol=combinaIgualExp(pol);
-	return 0;
-	//return completaPolArr(proc);
-}
-function outinput()
-{
-	document.getElementsByName("res")[0].innerHTML=""
-	log.buff="";
-	log.enable=false;
-
-	var inputs=document.getElementsByName("pol");
-	var str='';
-
-	if(inputs[1].value.length)
-	{
-		str='('+inputs[0].value+')*('+inputs[1].value+')';
-	}
-	else
-	{
-		str='('+inputs[0].value+')';
-	}
-
-	procesaPol(str);
-
-	log.enable=true;
-
-	log.sep();
-	log.fn("Respuesta:");
-
-	log.fn('G(P) * H(P):');
-	log.txt('Constante: '+Expresion.const);
-
-	log.array()
-	log.array(Expresion.monomios);
-	log.array()
-
-	document.getElementsByName("res")[0].innerHTML=log.buff;
-}
 function verifEstado(polArr){};

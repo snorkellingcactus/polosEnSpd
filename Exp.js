@@ -24,6 +24,7 @@ Exp.prototype.interpStr=function(str)
 }
 Exp.prototype.genMonID=function(mon)
 {
+
 	var incogStr='';
 
 	for(var i=0;i<mon.incogs.length;i++)
@@ -203,6 +204,7 @@ Exp.prototype.fusiona=function(mon , op)
 		tmpExpRef.fusConst(mon.const , op);
 
 		this.apila(tmpExpRef);
+
 		this.const+=tmpExpRef.const;
 	}
 }
@@ -214,7 +216,10 @@ Exp.prototype.fusionaMon=function(mon , op)
 
 		this.rmMonRef(this.monomios[i]);
 
-		this.monomios[i].fusiona(mon , op)
+		if(this.monomios[i].fusiona(mon , op))
+		{
+			this.monomios[i]=this.monomios[i].regen();
+		}
 
 		this.adMonRef(this.monomios[i] , i);
 	}
@@ -225,7 +230,7 @@ Exp.prototype.fusConstMon=function(mon , op)
 {
 	if(this.const)
 	{
-		this.log.txt("Nuevo monomio por Const = "+this.const);
+		this.log.txt("Nuevo Monomio por Const = "+this.const);
 		nMon=new Mon();
 		nMon.getRefMon(mon);
 
@@ -341,4 +346,64 @@ Exp.prototype.routh=function()
 Exp.prototype.esK=function()
 {
 	return !this.monomios.length
+}
+Exp.prototype.div=function(div)
+{
+	this.loginIni(this,div,'%');
+	//log.enable=false;
+	log.enable=true;
+
+	interp=new Interp()
+	interp.num=this;
+	interp.buff=div;
+	interp.div=1;
+	interp.mkDiv();
+
+	this.login();
+
+}
+Exp.prototype.suma=function(suma)
+{
+	this.loginIni(this,suma,'+');
+
+	log.enable=false;
+
+	this.apila(suma)
+
+	log.enable=true;
+
+	this.login();
+}
+Exp.prototype.mult=function(mult)
+{
+	this.loginIni(this,mult,'X');
+	log.enable=false;
+
+	interp=new Interp()
+	interp.num=this;
+	interp.buff=mult;
+	interp.mult=1;
+	interp.mkMult();
+
+	log.enable=true;
+
+	this.login();
+}
+Exp.prototype.login=function()
+{
+	log.txt('Constante: '+this.const);
+	log.array();
+	log.array(this.monomios);
+	log.array();
+}
+Exp.prototype.loginIni=function(A,B,op)
+{
+	log.sep();
+	log.array();
+	log.array(A.monomios);
+	log.array();
+	log.txt(op);
+	log.array();
+	log.array(B.monomios);
+	log.array();
 }
