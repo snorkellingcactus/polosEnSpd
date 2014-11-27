@@ -1,11 +1,11 @@
 function clrArr(arr)
 {
-	nArr=[];
+	nArr={};
 	for(clave in arr)
 	{
 		if(arr[clave])
 		{
-			nArr.push(arr[clave]);
+			nArr[clave]=arr[clave];
 		}
 	}
 

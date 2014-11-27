@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="./Log.js"></script>
 		<script type="text/javascript" src="./Mon.js"></script>
 		<script type="text/javascript" src="./Exp.js"></script>
+		<script type="text/javascript" src="./Factor.js"></script>
 		<script type="text/javascript" src="./Interp.js"></script>
 	</head>
 	<body>
@@ -51,12 +52,76 @@
 
 			function actLog()
 			{
-				if(log.cambio)
+				if(log.cambio&&log.enable)
 				{
 					LogOut.innerHTML=log.buff;
 
 					log.cambio=0;
 				}
+			}
+
+			function tablaRouth()
+			{
+				GPD=Expresiones[1];
+
+				var nFilas=GPD.monomios[0].x+1;
+				var nCols=Math.ceil(nFilas/2);
+
+				var tabla=document.createElement('table');
+					tabla.setAttribute('id','routh');
+
+				for(var i=0;i<nFilas;i++)
+				{
+					var tr=document.createElement('tr');
+					var td=document.createElement('td');
+					var txt=document.createTextNode('x^'+(nFilas-i-1));
+
+						td.appendChild(txt);
+						tr.appendChild(td);
+
+					for(var j=0;j<nCols;j++)
+					{
+						td=document.createElement('td');
+
+						if(i<2)
+						{
+							inner=(2*j)+i;
+							if(inner>nCols+1)
+							{
+								inner=0
+							}
+							else
+							{
+								if(inner>nCols)
+								{
+									inner=GPD.const;
+								}
+								else
+								{
+									var mon=GPD.monomios[inner];
+									var str=''+mon.cohef;
+
+									str+=Exp.prototype.genMonID(mon);
+
+									inner=str;
+								}
+							}
+						}
+						else
+						{
+							var inner='';
+						}
+						txt=document.createTextNode(''+inner);
+
+						td.appendChild(txt);
+						tr.appendChild(td);
+					}
+
+					tabla.appendChild(tr);
+				}
+
+				document.body.appendChild(tabla);
+
 			}
 			function outInput()
 			{
@@ -74,9 +139,9 @@
 						Expresiones[i]=interp.interpStr('('+Inputs[i].value+')');
 					}
 				}
-
-				log.enable=true;
 				log.fn("Respuesta:");
+
+				log.enable=false;
 
 				for(var i=0;i<Expresiones.length;i++)
 				{
@@ -91,6 +156,7 @@
 
 				LogOut.innerHTML=log.buff;
 
+				/*
 				nP=document.createElement('p');
 				nPTxt=document.createTextNode('Expresiones');
 
@@ -114,13 +180,36 @@
 						GPD.mult(HPD);
 						log.txt('Denominador GP + Numerador GP');
 						GPD.suma(GPN);
+
+						log.enable=true;
+						GPD.login();
+						//GPD.factorMon('');
 					}
 				)
 
 				nP.appendChild(nPTxt);
 				document.body.appendChild(nP);
-			}
+				*/
 
+				var GPN,HPN,GPD,GPD;
+
+				GPN=Expresiones[0];
+				GPD=Expresiones[1];
+				HPN=Expresiones[2];
+				HPD=Expresiones[3];
+
+				log.txt('Numerador GP X Numerador HP');
+				GPN.mult(HPN);
+				log.txt('Denominador GP X Denominador HP');
+				GPD.mult(HPD);
+				log.txt('Denominador GP + Numerador GP');
+				GPD.suma(GPN);
+
+				log.enable=true;
+				GPD.login();
+				tablaRouth();
+			}
+			
 			document.getElementsByName("pol")[0].addEventListener
 			(
 				"keydown",

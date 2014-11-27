@@ -2,7 +2,7 @@ Exp=function()
 {
 	//Distintos arrays que permiten referenciar monomios
 	//según distintos patrones.
-	this.refs={'incogs':[''],'factorP':[]};
+	this.refs={'incogs':{},'factorP':[]};
 	this.subExp=[];
 
 	//Lista de monomios.
@@ -323,9 +323,13 @@ Exp.prototype.adMonRef=function(mon , nMon)
 {
 	var monID=this.genMonID(mon);
 
+	log.txt('Se Insertará un monomio en refs con ID'+monID);
 	//Si no existía esa clave en el array la creo.
 	if(!this.refs.incogs[monID])
 	{
+		log.array();
+		log.array(this.refs.incogs);
+		log.array();
 		this.refs.incogs[monID]=mon;
 
 		return 1;
@@ -383,8 +387,8 @@ Exp.prototype.esK=function()
 Exp.prototype.div=function(div)
 {
 	this.loginIni(this,div,'%');
-	//log.enable=false;
-	log.enable=true;
+	log.enable=false;
+	//log.enable=true;
 
 	interp=new Interp()
 	interp.num=this;
@@ -404,14 +408,14 @@ Exp.prototype.suma=function(suma)
 	this.apila(suma)
 	this.const+=suma.const;
 
-	log.enable=true;
+	//log.enable=true;
 
 	this.login();
 }
 Exp.prototype.mult=function(mult)
 {
 	this.loginIni(this,mult,'X');
-	log.enable=true;
+	log.enable=false;
 
 	interp=new Interp()
 	interp.num=this;
@@ -419,9 +423,16 @@ Exp.prototype.mult=function(mult)
 	interp.mult=1;
 	interp.mkMult();
 
-	log.enable=true;
+	//log.enable=true;
 
 	this.login();
+}
+Exp.prototype.factorMon=function(mon)
+{
+	
+	log.array();
+	log.array(this.refs.incogs);
+	log.array();
 }
 Exp.prototype.login=function()
 {

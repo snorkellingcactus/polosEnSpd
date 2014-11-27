@@ -4,7 +4,8 @@ p[name="res"]
 	font-size:1.3em;
 }
 .objEle{color:white;font-weight:bold;}
-.arrEle{display:none}
+/*.arrEle{display:none}*/
+.arrEle{color:red;}
 
 .cajaEq
 {
