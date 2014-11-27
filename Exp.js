@@ -147,69 +147,79 @@ Exp.prototype.fusiona=function(mon , op)
 	}
 	else
 	{
-		var tmpExpRef=new Exp();
-		tmpExpRef.apila(this);
-		tmpExpRef.const=this.const;
-
-		this.fusionaMon(mon.monomios[0] , op)
-		
-
-
-		this.log.txt('Resolviendo primer fusion:');
-
-		this.log.array();
-		this.log.array(mon.monomios[0]);
-		this.log.array();
-		this.log.txt('Fus Op: '+op);
-		this.log.array();
-		this.log.array(tmpExpRef.monomios);
-		this.log.array();
-		this.log.txt('Res: '+op);
-		this.log.array();
-		this.log.array(this.monomios);
-		this.log.array();
-
-
-		for(var i=1;i<mon.monomios.length;i++)
+		if(mon.monomios.length)
 		{
-			tmpExp=new Exp();
-			tmpExp.apila(tmpExpRef);
-			tmpExp.const=tmpExpRef.const;
+			var tmpExpRef=new Exp();
+			tmpExpRef.apila(this);
+			tmpExpRef.const=this.const;
+			this.fusionaMon(mon.monomios[0] , op)
+			
 
-			this.log.txt('Resolviendo siguiente fusion: ');
-			this.log.array();
-			this.log.array(tmpExp.monomios);
-			this.log.array();
 
-			this.log.txt('Op: '+op);
+			this.log.txt('Resolviendo primer fusion:');
 
 			this.log.array();
-			this.log.array(mon.monomios[i]);
+			this.log.array(mon.monomios[0]);
+			this.log.array();
+			this.log.txt('Fus Op: '+op);
+			this.log.array();
+			this.log.array(tmpExpRef.monomios);
+			this.log.array();
+			this.log.txt('Res: '+op);
+			this.log.array();
+			this.log.array(this.monomios);
 			this.log.array();
 
-			tmpExp.fusionaMon(mon.monomios[i] , op);
 
-			this.log.txt('Resultado:');
+			for(var i=1;i<mon.monomios.length;i++)
+			{
+				tmpExp=new Exp();
+				tmpExp.apila(tmpExpRef);
+				tmpExp.const=tmpExpRef.const;
+
+				this.log.txt('Resolviendo siguiente fusion: ');
+				this.log.array();
+				this.log.array(tmpExp.monomios);
+				this.log.array();
+
+				this.log.txt('Op: '+op);
+
+				this.log.array();
+				this.log.array(mon.monomios[i]);
+				this.log.array();
+
+				tmpExp.fusionaMon(mon.monomios[i] , op);
+
+				this.log.txt('Resultado:');
+
+				this.log.array();
+				this.log.array(tmpExp.monomios);
+				this.log.array();
+
+				this.apila(tmpExp);
+			}
+
+			this.log.txt('Total:');
 
 			this.log.array();
-			this.log.array(tmpExp.monomios);
+			this.log.array(this.monomios);
 			this.log.array();
 
-			this.apila(tmpExp);
+			if(mon.const)
+			{
+				tmpExpRef.fusConst(mon.const , op);
+
+				this.apila(tmpExpRef);
+				this.const+=tmpExpRef.const;
+			}
 		}
-
-		this.log.txt('Total:');
-
-		this.log.array();
-		this.log.array(this.monomios);
-		this.log.array();
-	}
-	if(mon.const)
-	{
-		tmpExpRef.fusConst(mon.const , op);
-
-		this.apila(tmpExpRef);
-		this.const+=tmpExpRef.const;
+		else
+		{
+			if(mon.const)
+			{
+				this.fusConst(mon.const , op);
+			}
+		}
 	}
 }
 Exp.prototype.fusionaMon=function(mon , op)
@@ -326,6 +336,9 @@ Exp.prototype.adMonRef=function(mon , nMon)
 		this.log.array();
 		this.log.array(this.refs.incogs[monID]);
 		this.log.array();
+		this.log.array();
+		this.log.array(this.monomios);
+		this.log.array();
 
 		this.refs.incogs[monID].cohef+=mon.cohef;
 
@@ -367,3 +380,66 @@ Exp.prototype.esK=function()
 {
 	return !this.monomios.length
 }
+Exp.prototype.div=function(div)
+{
+	this.loginIni(this,div,'%');
+	//log.enable=false;
+	log.enable=true;
+
+	interp=new Interp()
+	interp.num=this;
+	interp.buff=div;
+	interp.div=1;
+	interp.mkDiv();
+
+	this.login();
+
+}
+Exp.prototype.suma=function(suma)
+{
+	this.loginIni(this,suma,'+');
+
+	log.enable=false;
+
+	this.apila(suma)
+	this.const+=suma.const;
+
+	log.enable=true;
+
+	this.login();
+}
+Exp.prototype.mult=function(mult)
+{
+	this.loginIni(this,mult,'X');
+	log.enable=true;
+
+	interp=new Interp()
+	interp.num=this;
+	interp.buff=mult;
+	interp.mult=1;
+	interp.mkMult();
+
+	log.enable=true;
+
+	this.login();
+}
+Exp.prototype.login=function()
+{
+	log.txt('Constante: '+this.const);
+	log.array();
+	log.array(this.monomios);
+	log.array();
+}
+Exp.prototype.loginIni=function(A,B,op)
+{
+	log.sep();
+	log.txt('Constante: '+A.const);
+	log.array();
+	log.array(A.monomios);
+	log.array();
+	log.txt(op);
+	log.txt('Constante: '+B.const);
+	log.array();
+	log.array(B.monomios);
+	log.array();
+ }

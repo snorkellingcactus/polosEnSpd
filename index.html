@@ -12,9 +12,31 @@
 		<script type="text/javascript" src="./Interp.js"></script>
 	</head>
 	<body>
-		<p>G(P): <input type="text" autofocus="autofocus" name="pol"/></p>;
-		<p>H(P): <input type="text" autofocus="autofocus" name="pol"/></p>;
-
+		<div class='cajaEq'>
+			<!--
+			<span>
+				<p>K:</p> 
+				<div>
+					<input type="text" autofocus="autofocus" name="pol"/>
+					<input type="text" autofocus="autofocus" name="pol"/>
+				</div>
+			</span>
+			-->
+			<span>
+				<p>G(P):</p> 
+				<div>
+					<input type="text" autofocus="autofocus" name="pol"/>
+					<input type="text" autofocus="autofocus" name="pol"/>
+				</div>
+			</span>
+			<span>
+				<p>H(P):</p> 
+				<div>
+					<input type="text" autofocus="autofocus" name="pol"/>
+					<input type="text" autofocus="autofocus" name="pol"/>
+				</div>
+			</span>
+		</div>
 		<p name="res"></p>
 
 		<script type="text/javascript">
@@ -25,7 +47,7 @@
 
 			log=new Log();
 
-			setTimeout(actLog , 200);
+			setInterval(actLog , 200);
 
 			function actLog()
 			{
@@ -38,8 +60,8 @@
 			}
 			function outInput()
 			{
-				//log.enable=false;
-				log.enable=true;
+				log.enable=false;
+				//log.enable=true;
 
 				for(var i=0;i<Inputs.length;i++)
 				{
@@ -49,10 +71,7 @@
 
 						interp.log=log;
 
-						Expresiones.push
-						(
-							interp.interpStr('('+Inputs[i].value+')')
-						);
+						Expresiones[i]=interp.interpStr('('+Inputs[i].value+')');
 					}
 				}
 
@@ -71,6 +90,35 @@
 				}
 
 				LogOut.innerHTML=log.buff;
+
+				nP=document.createElement('p');
+				nPTxt=document.createTextNode('Expresiones');
+
+				nP.setAttribute('class','button');
+
+				nP.addEventListener
+				(
+					"click",
+					function()
+					{
+						var GPN,HPN,GPD,GPD;
+
+						GPN=Expresiones[0];
+						GPD=Expresiones[1];
+						HPN=Expresiones[2];
+						HPD=Expresiones[3];
+
+						log.txt('Numerador GP X Numerador HP');
+						GPN.mult(HPN);
+						log.txt('Denominador GP X Denominador HP');
+						GPD.mult(HPD);
+						log.txt('Denominador GP + Numerador GP');
+						GPD.suma(GPN);
+					}
+				)
+
+				nP.appendChild(nPTxt);
+				document.body.appendChild(nP);
 			}
 
 			document.getElementsByName("pol")[0].addEventListener

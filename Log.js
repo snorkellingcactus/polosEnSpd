@@ -4,6 +4,7 @@ Log=function()
 	this.splTxt=":::::::::::::::::::::::::::::::::::::::::::::::::::";
 	this.enable=true;
 	this.arrayDef=false;
+	this.cambio=false
 }
 Log.prototype.fn=function(nombre)
 {

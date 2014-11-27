@@ -1,2 +1,46 @@
-.objEle{color:blue}
+body{background-color:#1C1C1C;color:silver;}
+p[name="res"]
+{
+	font-size:1.3em;
+}
+.objEle{color:white;font-weight:bold;}
 .arrEle{display:none}
+
+.cajaEq
+{
+	width:80%;
+	margin:50px 0 0 50px;
+}
+.cajaEq p
+{
+	font-size:2em;
+	width:15%;
+	float:left;
+}
+.cajaEq input
+{
+	background-color:dimgray;
+	color:silver;
+	border-style:none;
+	font-weight:bold;
+	font-size:1.5em;
+	padding:15px;
+	border-radius:3px;
+	display:block;
+	margin:10px 0px 0px 10px;
+}
+.cajaEq span
+{
+	display:block;
+	clear:both;
+	border-bottom:2px dashed;
+	padding-bottom:25px;
+	margin-bottom:25px;
+}
+.button
+{
+	font-size:1.5em;
+	margin:20px 0px 20px 0px;
+	font-weight:bold;
+	color:white;
+}
