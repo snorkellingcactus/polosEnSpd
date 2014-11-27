@@ -5,26 +5,19 @@ Log=function()
 	this.enable=true;
 	this.arrayDef=false;
 }
-Log.prototype.isAble=function()
-{
-	if(!this.enable)
-	{
-		return;
-	}
-};
 Log.prototype.fn=function(nombre)
-{	
-	this.isAble();
+{
+	if(!this.enable){return};this.cambio=1
 	this.buff+="<h2>"+nombre+"</h2>";
 };
 Log.prototype.sep=function()
 {
-	this.isAble();
+	if(!this.enable){return};this.cambio=1
 	this.buff+="<p>"+this.splTxt+"</p>";
 };
 Log.prototype.br=function(num)
 {
-	this.isAble();
+	if(!this.enable){return};this.cambio=1
 	for(var j=0;j<num;j++)
 	{
 		this.buff+="<br>";
@@ -32,7 +25,7 @@ Log.prototype.br=function(num)
 }
 Log.prototype.txt=function()
 {
-	this.isAble();
+	if(!this.enable){return};this.cambio=1
 	for(var j=0;j<arguments.length;j++)
 	{
 		this.buff+="<p>"+arguments[j]+"</p>";
@@ -40,7 +33,7 @@ Log.prototype.txt=function()
 }
 Log.prototype.arrayStr=function(param,clave)
 {
-	this.isAble();
+	if(!this.enable){return};this.cambio=1
 
 	var tipo=param.constructor.toString();
 	var esArr=tipo.indexOf("Array()")!=-1;
@@ -74,7 +67,7 @@ Log.prototype.arrayStr=function(param,clave)
 }
 Log.prototype.array=function()
 {
-	this.isAble();
+	if(!this.enable){return};this.cambio=1
 	if(this.arrayDef)
 	{
 		if(arguments.length)

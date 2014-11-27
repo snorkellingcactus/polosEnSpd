@@ -15,9 +15,59 @@
 		<p>G(P): <input type="text" autofocus="autofocus" name="pol"/></p>;
 		<p>H(P): <input type="text" autofocus="autofocus" name="pol"/></p>;
 
-		<p name="res">Res: </p>
-		
+		<p name="res"></p>
+
 		<script type="text/javascript">
+
+			Inputs=document.getElementsByName("pol");
+			LogOut=document.getElementsByName("res")[0];
+			Expresiones=[];
+
+			log=new Log();
+
+			setTimeout(actLog , 200);
+
+			function actLog()
+			{
+				if(log.cambio)
+				{
+					LogOut.innerHTML=log.buff;
+
+					log.cambio=0;
+				}
+			}
+			function outInput()
+			{
+				log.enable=false;
+
+				for(var i=0;i<Inputs.length;i++)
+				{
+					if(Inputs[i].value.length)
+					{
+						Expresiones.push
+						(
+							new Interp().interpStr('('+Inputs[i].value+')')
+						);
+					}
+				}
+
+				log.enable=true;
+				log.fn("Respuesta:");
+
+				for(var i=0;i<Expresiones.length;i++)
+				{
+					log.fn('Expresion '+i+' :');
+					log.txt('Constante: '+Expresiones[i].const);
+
+					log.array()
+					log.array(Expresiones[i].monomios);
+					log.array()
+					log.sep();
+				}
+
+				LogOut.innerHTML=log.buff;
+			}
+
 			document.getElementsByName("pol")[0].addEventListener
 			(
 				"keydown",
@@ -25,7 +75,7 @@
 				{
 					if(event.keyCode==13)
 					{
-						outinput();
+						outInput();
 					}
 				}
 			);
