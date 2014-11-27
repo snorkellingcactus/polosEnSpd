@@ -32,20 +32,11 @@ Mon=function()
 //Elimina la incógnita del nombre pasado por parámetro del monomio.
 Mon.prototype.dIncog=function(nIncog)
 {
-	delete this.incogs[this[nIncog]];
-	delete this[nIncog];
+	this.incogs[this[nIncog]]=undefined;
+	this[nIncog]=undefined;
 }
 Mon.prototype.fusiona=function(mon , op)
 {
-	if(arguments[2])
-	{
-		nMon=new Mon();
-		nMon.getRefMon(this);
-
-		nMon.fusiona(mon , op);
-
-		return nMon;
-	}
 	log.txt("Mon.cohef= "+this.cohef+" ; nMon.cohef= "+mon.cohef);
 
 	this.cohef=this.opCohef(this.cohef , mon.cohef , op);
@@ -70,7 +61,12 @@ Mon.prototype.fusiona=function(mon , op)
 			this.dIncog(nIncNom);
 		}
 	}
-	this.incogs=clrLst(this.incogs);
+
+	var nMon=new Mon();
+
+	nMon.getRefMon(this);
+
+	return nMon;
 }
 Mon.prototype.opExpo=function(expA,expB,op)
 {
@@ -118,11 +114,14 @@ Mon.prototype.getRefMon=function(rMon)
 {
 	for(var i=0;i<rMon.incogs.length;i++)
 	{
-		var nInc=rMon.incogs[i];
+		if(rMon.incogs[i]&&rMon[rMon.incogs[i]])
+		{
+			var nInc=rMon.incogs[i];
 
-		this.nIncog(nInc);
+			this.nIncog(nInc);
 
-		this[nInc]=rMon[nInc];
+			this[nInc]=rMon[nInc];
+		}
 	}
 
 	this.cohef=rMon.cohef;

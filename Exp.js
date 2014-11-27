@@ -114,7 +114,7 @@ Exp.prototype.insMonomio=function(monomio)
 				}
 			}
 
-			log.txt("ID Monomio Insertado: "+incogStr);
+			this.log.txt("ID Monomio Insertado: "+incogStr);
 		}
 		if(this.adMonRef(monomio))
 		{
@@ -123,14 +123,14 @@ Exp.prototype.insMonomio=function(monomio)
 	}
 	else
 	{
-		log.txt('Eliminado Monomio:');
-		log.array();
-		log.array(monomio);
-		log.array();
+		this.log.txt('Eliminado Monomio:');
+		this.log.array();
+		this.log.array(monomio);
+		this.log.array();
 
 		this.const+=monomio.cohef;
 
-		log.txt('Nueva Constante: '+this.const);
+		this.log.txt('Nueva Constante: '+this.const);
 	}
 }
 Exp.prototype.nSubExp=function(nExp)
@@ -164,39 +164,40 @@ Exp.prototype.fusiona=function(mon , op)
 		this.log.array();
 		this.log.array(this.monomios);
 		this.log.array();
+		
 		for(var i=1;i<mon.monomios.length;i++)
 		{
 			tmpExp=new Exp();
 			tmpExp.apila(tmpExpRef);
 			tmpExp.const=tmpExpRef.const;
 
-			log.txt('Resolviendo siguiente fusion: ');
-			log.array();
-			log.array(tmpExp.monomios);
-			log.array();
+			this.log.txt('Resolviendo siguiente fusion: ');
+			this.log.array();
+			this.log.array(tmpExp.monomios);
+			this.log.array();
 
-			log.txt('Op: '+op);
+			this.log.txt('Op: '+op);
 
-			log.array();
-			log.array(mon.monomios[i]);
-			log.array();
+			this.log.array();
+			this.log.array(mon.monomios[i]);
+			this.log.array();
 
 			tmpExp.fusionaMon(mon.monomios[i] , op);
 
-			log.txt('Resultado:');
+			this.log.txt('Resultado:');
 
-			log.array();
-			log.array(tmpExp.monomios);
-			log.array();
+			this.log.array();
+			this.log.array(tmpExp.monomios);
+			this.log.array();
 
 			this.apila(tmpExp);
 		}
 
-		log.txt('Total:');
+		this.log.txt('Total:');
 
-		log.array();
-		log.array(this.monomios);
-		log.array();
+		this.log.array();
+		this.log.array(this.monomios);
+		this.log.array();
 	}
 	if(mon.const)
 	{
@@ -214,7 +215,7 @@ Exp.prototype.fusionaMon=function(mon , op)
 
 		this.rmMonRef(this.monomios[i]);
 
-		this.monomios[i].fusiona(mon , op)
+		this.monomios[i]=this.monomios[i].fusiona(mon , op)
 
 		this.adMonRef(this.monomios[i] , i);
 	}
@@ -244,10 +245,10 @@ Exp.prototype.fusConst=function(nConst , op)
 		op
 	);
 
-	log.txt("Se operará sobre:");
-	log.array();
-	log.array(this.monomios);
-	log.array();
+this.log.txt("Se operará sobre:");
+this.log.array();
+this.log.array(this.monomios);
+this.log.array();
 
 	for(var i=0;i<this.monomios.length;i++)
 	{
@@ -277,17 +278,12 @@ Exp.prototype.rmMonRef=function(mon)
 {
 	var monID=this.genMonID(mon);
 
-	this.refs.incogs[monID]=mon;
+	this.refs.incogs[monID]=undefined;
 
 	this.refs.incogs=clrArr
 	(
 		this.refs.incogs
 	);
-
-	log.txt('Registro: '+monID);
-	log.array();
-	log.array(this.refs.incogs);
-	log.array();
 }
 Exp.prototype.adMonRef=function(mon , nMon)
 {
@@ -304,7 +300,7 @@ Exp.prototype.adMonRef=function(mon , nMon)
 	{
 		this.refs.incogs[monID].cohef+=mon.cohef;
 
-		log.txt('Ya existe un monomio con '+monID);
+	this.log.txt('Ya existe un monomio con '+monID);
 
 		return 0;
 	}
@@ -323,6 +319,8 @@ Exp.prototype.apila=function(mon)
 Exp.prototype.apilaMon=function(aMon)
 {
 	nMon=new Mon();
+
+
 	nMon.getRefMon(aMon);
 
 	this.insMonomio(nMon);

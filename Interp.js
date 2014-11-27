@@ -1,4 +1,3 @@
-InterpMaxExec=200;
 function indexOf(str,chars)
 {
 	for(var i=0 ; i<str.length ; i++)
@@ -91,9 +90,10 @@ Interp.prototype.incogOp=function(letra)
 	{
 		this.monomio[letra]*=-1;
 
-		log.txt("Div:false");
+		this.log.txt("Div:false");
 		this.div=false;
 	}
+
 	this.log.txt('Exponente: '+this.monomio[letra]);
 	this.log.txt('Coheficiente: '+this.monomio.cohef);
 	//Secciono incógnita.
@@ -146,15 +146,6 @@ Interp.prototype.letraOp=function(letra)
 //Analiza uno a uno los carácteres del string y realiza las operaciones.
 Interp.prototype.interpStr=function(str)
 {
-	if(!InterpMaxExec)
-	{
-		return 0;
-	}
-	else
-	{
-		--InterpMaxExec;
-	}
-	this.id=15-InterpMaxExec;
 	//Creo una expresion si no la hay.
 	if(!this.expresion)
 	{
@@ -166,7 +157,7 @@ Interp.prototype.interpStr=function(str)
 
 	this.str=str;
 
-	log.txt("Entrada:"+this.str);
+	this.log.txt("Entrada:"+this.str);
 
 	this.clrStr();		//Borro espacios y puntos.
 
@@ -179,7 +170,6 @@ Interp.prototype.interpStr=function(str)
 	{
 		//Decido que se va a hacer con el caracter dependiendo de
 		//Si es letra o número.
-		this.log.txt("Pos Interp "+this.id+' = '+this.pos);
 		if(isNaN(this.str[this.pos]))
 		{
 			this.letraOp(this.str[this.pos]);
@@ -201,25 +191,12 @@ Interp.prototype.interpStr=function(str)
 
 	this.expMonomio(this.monomio);
 
-	//this.combina(this.expresion);
-/*
-	this.log.txt('Constante: '+this.expresion.const);
-	this.log.txt('Lista monomios:');
-	this.log.array()
-	this.log.array(this.expresion.monomios);
-	this.log.array();
-	this.log.txt('Lista referencias según incógnitas:');
-	this.log.array();
-	this.log.array(this.expresion.refs.incogs);
-	this.log.array();
-	this.log.sep();
-*/
 	return this.expresion;
 };
 //Convierte a número this.buff y lo almacena en this.num.
 Interp.prototype.floatBuff=function()
 {
-	log.txt('Num = '+this.num+' ; Buff = '+this.buff);
+this.log.txt('Num = '+this.num+' ; Buff = '+this.buff);
 
 	if(typeof(this.buff) == "object")
 	{
@@ -247,7 +224,7 @@ Interp.prototype.expMonomio=function()
 {
 	if(typeof(this.num)=='object')
 	{
-		log.txt('Apilando resultado');
+		this.log.txt('Apilando resultado');
 
 		if(this.num.const)
 		{
@@ -270,7 +247,8 @@ Interp.prototype.expMonomio=function()
 		{
 			//Es una constante, no un monomio.
 			this.expresion.const+=this.num;
-			log.txt('El término resultó en una constante '+this.expresion.const);
+
+			this.log.txt('El término resultó en una constante '+this.expresion.const);
 		}
 	}
 
@@ -333,9 +311,9 @@ Interp.prototype.mkMult=function()
 			{
 				if(this.incog)
 				{
-					log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X '+this.buff);
+					this.log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X '+this.buff);
 					this.monomio.cohef*=parseFloat(this.buff)||1;
-					log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+					this.log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
 				}
 				else
 				{
@@ -344,6 +322,7 @@ Interp.prototype.mkMult=function()
 					{
 						num=this.num;
 					}
+
 					this.log.txt('Buff = '+this.buff+' ; Num = '+this.num);
 					this.buff=parseFloat(this.buff)*num;
 					this.log.txt('Una multiplicación resultó '+this.buff);
@@ -407,15 +386,15 @@ Interp.prototype.mkDiv=function()
 			{
 				if(this.incog)
 				{
-					if(isNaN(parseFloat(this.buff)))
+					if(!isNaN(parseFloat(this.buff)))
 					{
-						this.monomio[this.incog]*=-1;
+						this.log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
+						this.monomio.cohef*=(1/parseFloat(this.buff))||1;
+						this.log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
 					}
 					else
 					{
-						log.txt('Coheficiente de '+this.incog+' = '+this.monomio.cohef+' X 1/'+this.buff);
-						this.monomio.cohef*=(1/parseFloat(this.buff))||1;
-						log.txt('Coheficiente de '+this.incog+' es '+this.monomio.cohef);
+						this.div=true;
 					}
 				}
 				else
