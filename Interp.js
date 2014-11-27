@@ -521,7 +521,10 @@ Interp.prototype.opParIni=function()
 
 		this.pos+=nExpLen;
 
-		this.log.txt('Constantee = '+this.expresion.const);
+		this.log.txt('Va quedando:')
+		this.log.array()
+		this.log.array(nExp.monomios);
+		this.log.array()
 		this.log.txt("Se continua analizando "+this.pos+' - '+this.str.substr(this.pos+i));
 }
 Interp.prototype.opParFin=function(){}

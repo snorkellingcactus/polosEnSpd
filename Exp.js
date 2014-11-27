@@ -152,19 +152,24 @@ Exp.prototype.fusiona=function(mon , op)
 		tmpExpRef.const=this.const;
 
 		this.fusionaMon(mon.monomios[0] , op)
-
-
-		this.log.txt('Guardando expresion:');
-		this.log.array();
-		this.log.array(tmpExpRef.monomios);
-		this.log.array();
+		
 
 
 		this.log.txt('Resolviendo primer fusion:');
+
+		this.log.array();
+		this.log.array(mon.monomios[0]);
+		this.log.array();
+		this.log.txt('Fus Op: '+op);
+		this.log.array();
+		this.log.array(tmpExpRef.monomios);
+		this.log.array();
+		this.log.txt('Res: '+op);
 		this.log.array();
 		this.log.array(this.monomios);
 		this.log.array();
-		
+
+
 		for(var i=1;i<mon.monomios.length;i++)
 		{
 			tmpExp=new Exp();
@@ -212,6 +217,12 @@ Exp.prototype.fusionaMon=function(mon , op)
 	for(var i=0;i<this.monomios.length;i++)
 	{
 		this.log.txt('Fusionando monomio...');
+		log.array();
+		log.array(this.monomios[i]);
+		log.array();
+		log.array();
+		log.array(mon);
+		log.array();
 
 		this.rmMonRef(this.monomios[i]);
 
@@ -230,8 +241,21 @@ Exp.prototype.fusConstMon=function(mon , op)
 		nMon=new Mon();
 		nMon.getRefMon(mon);
 
-		nMon.cohef=nMon.opCohef( nMon.cohef , this.const , op);
+		nMon.cohef=nMon.opCohef( this.const , nMon.cohef , op);
+		if(op===0)
+		{
+			for(var i=0;i<nMon.incogs.length;i++)
+			{
+				var nInc=nMon.incogs[i];
+				nMon[nInc]*=-1;
+			}
+		}
+
 		this.const=0;
+
+		this.log.array()
+		this.log.array(nMon)
+		this.log.array()
 
 		this.insMonomio(nMon);
 	}
@@ -245,10 +269,10 @@ Exp.prototype.fusConst=function(nConst , op)
 		op
 	);
 
-this.log.txt("Se operará sobre:");
-this.log.array();
-this.log.array(this.monomios);
-this.log.array();
+	this.log.txt("Se operará sobre:");
+	this.log.array();
+	this.log.array(this.monomios);
+	this.log.array();
 
 	for(var i=0;i<this.monomios.length;i++)
 	{
@@ -298,9 +322,12 @@ Exp.prototype.adMonRef=function(mon , nMon)
 	}
 	else
 	{
-		this.refs.incogs[monID].cohef+=mon.cohef;
+		this.log.txt('Ya existe un monomio con '+monID+' :');
+		this.log.array();
+		this.log.array(this.refs.incogs[monID]);
+		this.log.array();
 
-	this.log.txt('Ya existe un monomio con '+monID);
+		this.refs.incogs[monID].cohef+=mon.cohef;
 
 		return 0;
 	}
