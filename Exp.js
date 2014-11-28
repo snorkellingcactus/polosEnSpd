@@ -53,67 +53,6 @@ Exp.prototype.insMonomio=function(monomio)
 			incogAct+=monomio[incogAct];
 			incogStr+=incogAct;
 
-			//Verifico si el monomio tiene a P.
-			if(monomio.p)
-			{
-				this.log.txt('Monomio tiene a incógnita especial P^'+monomio.p);
-
-				//Si P existía en la lista de referencia factorP lo proceso, sino lo agrego.
-				if(this.refs.factorP[monomio.p])
-				{
-					//El monomio preexistente con el mismo exponente de P.
-					monFP=this.monomios[this.refs.factorP[monomio.p]];
-
-					//Si no es ya una subexpresion, lo será.
-					if(!(monFP instanceof Exp))
-					{
-						monFP.dIncog('p');
-
-						//El monomio es ahora una expresion con el mismo dentro.
-						monFP=new Exp(monFP);
-
-						this.log.fn('new Exp()');
-						monFP.log=this.log;
-					}
-					
-					//Agrego el nuevo monomio que también contiene a P.
-					monFP.insMonomio(monomio);
-					
-					monomio.dIncog('p');
-
-					this.log.txt('Variable especial ya definida, factorizando:');
-					var str='( ';
-					for(var i=0;i<monFP.monomios.length;i++)
-					{
-						var mon=monFP.monomios[i];
-
-						str+=cohef;
-
-						for(var j=0;j<mon.incogs.length;j++)
-						{
-							var incog=mon.incogs[j];
-
-							str+=incog+'^';
-							str+=mon[incog];
-						}
-
-						str+=' + ';
-					}
-					str=str.substr(0,str.length-1)+' )';
-
-					this.log.txt('Factorizado: '+str);
-					//La forma resultante aproximada de las operaciones anteriores es
-					//un miembro-expresión que se representaría así:
-					//p^y(k1+k2+k3+...)
-				}
-				else
-				{
-					this.refs.factorP[monomio.p]=this.monomios.length;
-
-					this.log.txt('Agregada nueva incógnita especial P^'+monomio.p);
-				}
-			}
-
 			this.log.txt("ID Monomio Insertado: "+incogStr);
 		}
 		if(this.adMonRef(monomio))

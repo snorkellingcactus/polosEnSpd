@@ -14,15 +14,6 @@
 	</head>
 	<body>
 		<div class='cajaEq'>
-			<!--
-			<span>
-				<p>K:</p> 
-				<div>
-					<input type="text" autofocus="autofocus" name="pol"/>
-					<input type="text" autofocus="autofocus" name="pol"/>
-				</div>
-			</span>
-			-->
 			<span>
 				<p>G(P):</p> 
 				<div>
@@ -45,9 +36,21 @@
 			Inputs=document.getElementsByName("pol");
 			LogOut=document.getElementsByName("res")[0];
 			Expresiones=[];
+			InputVals=
+			[
+				'10',
+				'(x+2)*(x+1)',
+				'1',
+				'x'
+			];
+
+			for(var i =0;i<InputVals.length;i++)
+			{
+				Inputs[i].defaultValue=InputVals[i];
+			}
 
 			log=new Log();
-
+			/*
 			setInterval(actLog , 200);
 
 			function actLog()
@@ -59,6 +62,7 @@
 					log.cambio=0;
 				}
 			}
+			*/
 
 			function graficaExp(expresion)
 			{
