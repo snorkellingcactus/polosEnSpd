@@ -26,15 +26,15 @@
 			<span>
 				<p>G(P):</p> 
 				<div>
-					<input type="text" autofocus="autofocus" name="pol"/>
-					<input type="text" autofocus="autofocus" name="pol"/>
+					<input type="text" value="10" autofocus="autofocus" name="pol"/>
+					<input type="text" value="(x+2)*(x+3)" autofocus="autofocus" name="pol"/>
 				</div>
 			</span>
 			<span>
 				<p>H(P):</p> 
 				<div>
-					<input type="text" autofocus="autofocus" name="pol"/>
-					<input type="text" autofocus="autofocus" name="pol"/>
+					<input type="text" value="1" autofocus="autofocus" name="pol"/>
+					<input type="text" value="x" autofocus="autofocus" name="pol"/>
 				</div>
 			</span>
 		</div>
@@ -60,73 +60,132 @@
 				}
 			}
 
+			function graficaExp(expresion)
+			{
+				var nP=document.createElement('p');
+					nP.setAttribute('class','exp');
+				if(expresion.const)
+				{
+					var txt=document.createTextNode(expresion.const+'+')
+					nP.appendChild(txt);
+				}
+
+				for(var k=0;k<expresion.monomios.length;k++)
+				{
+					var mon=expresion.monomios[k]
+					var txt=document.createTextNode(mon.cohef);
+					nP.appendChild(txt);
+
+					for(var e=0;e<mon.incogs.length;e++)
+					{
+						var txt=document.createTextNode(mon.incogs[e]);
+							nP.appendChild(txt);
+
+
+						var nSpan=document.createElement('span');
+							nSpan.setAttribute('class','expo');
+
+							nSpan.innerHTML+=mon[mon.incogs[e]];
+
+							nP.appendChild(nSpan);
+					}
+
+					var txt=document.createTextNode('+')
+					nP.appendChild(txt);
+				}
+				nP.innerHTML=nP.innerHTML.substr(0,nP.innerHTML.length-1);
+
+				return nP;
+			}
 			function tablaRouth()
 			{
-				GPD=Expresiones[1];
-
-				var nFilas=GPD.monomios[0].x+1;
-				var nCols=Math.ceil(nFilas/2);
-
 				var tabla=document.createElement('table');
 					tabla.setAttribute('id','routh');
 
-				for(var i=0;i<nFilas;i++)
+				var pRouth=new FactorOrd('x',Expresiones[1]);
+
+				var str='';
+				var nP=document.createElement('p');
+					nP.setAttribute('id','pRouth');
+				for(var i=0;i<pRouth['x'].length;i++)
 				{
+					var expo='';
+					var incog='';
+
+					if(i>0)
+					{
+						incog='x';
+						if(i>1)
+						{
+							expo+=''+i;
+						}
+					}
+					nP.innerHTML+=graficaExp(pRouth['x'][i]).innerHTML+''+incog+'<span class="expo">'+expo+'</span>+';
+				}
+				nP.innerHTML=nP.innerHTML.substr(0,nP.innerHTML.length-1);
+				document.body.appendChild(nP)
+
+				var tRouth=pRouth.tablaRouth('x');
+
+				for(var i=0;i<tRouth.length;i++)
+				{
+					if(!tRouth[i])
+					{
+						return 0;
+					}
 					var tr=document.createElement('tr');
 					var td=document.createElement('td');
-					var txt=document.createTextNode('x^'+(nFilas-i-1));
+					var nP=document.createElement('p');
 
-						td.appendChild(txt);
+					var txt=document.createTextNode('x')
+						nP.appendChild(txt);
+
+					var expo=tRouth.length-i-1;
+					var nSpan=document.createElement('span');
+					var expoClass='expo';
+
+					if(expo===1)
+					{
+						expoClass+=' uno';
+					}
+						nSpan.setAttribute('class',expoClass);
+						nSpan.innerHTML=expo;
+						nP.appendChild(nSpan);
+						td.appendChild(nP);
 						tr.appendChild(td);
 
-					for(var j=0;j<nCols;j++)
+					for(var j=0;j<tRouth[i].length;j++)
 					{
 						td=document.createElement('td');
 
-						if(i<2)
-						{
-							inner=(2*j)+i;
-							if(inner>nCols+1)
-							{
-								inner=0
-							}
-							else
-							{
-								if(inner>nCols)
-								{
-									inner=GPD.const;
-								}
-								else
-								{
-									var mon=GPD.monomios[inner];
-									var str=''+mon.cohef;
+						nP=graficaExp(tRouth[i][j]);
 
-									str+=Exp.prototype.genMonID(mon);
-
-									inner=str;
-								}
-							}
-						}
-						else
-						{
-							var inner='';
-						}
-						txt=document.createTextNode(''+inner);
-
-						td.appendChild(txt);
+						td.appendChild(nP);
 						tr.appendChild(td);
 					}
 
 					tabla.appendChild(tr);
 				}
 
-				document.body.appendChild(tabla);
+				nH=document.createElement('h2');
+				if(pRouth.estable)
+				{
+					nH.innerHTML='Sistema Estable';
+					nH.setAttribute('class','sEstable');
+				}
+				else
+				{
+					nH.innerHTML='Sistema Inestable';
+					nH.setAttribute('class','sInestable');
+				}
 
+				document.body.appendChild(tabla);
+				document.body.appendChild(nH);
 			}
 			function outInput()
 			{
 				log.enable=false;
-				//log.enable=true;
+				//log.enable=false;
 
 				for(var i=0;i<Inputs.length;i++)
 				{
@@ -142,7 +201,6 @@
 				log.fn("Respuesta:");
 
 				log.enable=false;
-
 				for(var i=0;i<Expresiones.length;i++)
 				{
 					log.fn('Expresion '+i+' :');
@@ -153,43 +211,6 @@
 					log.array()
 					log.sep();
 				}
-
-				LogOut.innerHTML=log.buff;
-
-				/*
-				nP=document.createElement('p');
-				nPTxt=document.createTextNode('Expresiones');
-
-				nP.setAttribute('class','button');
-
-				nP.addEventListener
-				(
-					"click",
-					function()
-					{
-						var GPN,HPN,GPD,GPD;
-
-						GPN=Expresiones[0];
-						GPD=Expresiones[1];
-						HPN=Expresiones[2];
-						HPD=Expresiones[3];
-
-						log.txt('Numerador GP X Numerador HP');
-						GPN.mult(HPN);
-						log.txt('Denominador GP X Denominador HP');
-						GPD.mult(HPD);
-						log.txt('Denominador GP + Numerador GP');
-						GPD.suma(GPN);
-
-						log.enable=true;
-						GPD.login();
-						//GPD.factorMon('');
-					}
-				)
-
-				nP.appendChild(nPTxt);
-				document.body.appendChild(nP);
-				*/
 
 				var GPN,HPN,GPD,GPD;
 
@@ -205,8 +226,7 @@
 				log.txt('Denominador GP + Numerador GP');
 				GPD.suma(GPN);
 
-				log.enable=true;
-				GPD.login();
+				log.enable=false;
 				tablaRouth();
 			}
 			

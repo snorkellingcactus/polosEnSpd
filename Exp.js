@@ -205,20 +205,17 @@ Exp.prototype.fusiona=function(mon , op)
 			this.log.array(this.monomios);
 			this.log.array();
 
-			if(mon.const)
-			{
-				tmpExpRef.fusConst(mon.const , op);
+			
+			tmpExpRef.fusConst(mon.const , op);
 
-				this.apila(tmpExpRef);
-				this.const+=tmpExpRef.const;
-			}
+			this.apila(tmpExpRef);
+			this.const+=tmpExpRef.const;
+			
 		}
 		else
 		{
-			if(mon.const)
-			{
-				this.fusConst(mon.const , op);
-			}
+			
+			this.fusConst(mon.const , op);
 		}
 	}
 }
@@ -388,7 +385,7 @@ Exp.prototype.div=function(div)
 {
 	this.loginIni(this,div,'%');
 	log.enable=false;
-	//log.enable=true;
+	//log.enable=false;
 
 	interp=new Interp()
 	interp.num=this;
@@ -408,9 +405,31 @@ Exp.prototype.suma=function(suma)
 	this.apila(suma)
 	this.const+=suma.const;
 
-	//log.enable=true;
+	//log.enable=false;
 
 	this.login();
+}
+Exp.prototype.resta=function(resta)
+{
+	var nExp=new Exp();
+
+	nExp.suma(resta);
+
+
+	log.enable=false;
+	log.txt('Resta:');
+	for(var i=0;i<nExp.monomios.length;i++)
+	{
+		nExp.monomios[i].cohef*=-1;
+	}
+	nExp.const*=-1;
+
+	this.loginIni(this,nExp , '-');
+
+	this.suma(nExp);
+
+	this.login();
+	log.enable=false;
 }
 Exp.prototype.mult=function(mult)
 {
@@ -423,16 +442,9 @@ Exp.prototype.mult=function(mult)
 	interp.mult=1;
 	interp.mkMult();
 
-	//log.enable=true;
+	//log.enable=false;
 
 	this.login();
-}
-Exp.prototype.factorMon=function(mon)
-{
-	
-	log.array();
-	log.array(this.refs.incogs);
-	log.array();
 }
 Exp.prototype.login=function()
 {

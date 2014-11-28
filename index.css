@@ -10,7 +10,7 @@ p[name="res"]
 .cajaEq
 {
 	width:80%;
-	margin:50px 0 0 50px;
+	margin:50px 0 0 10%;
 }
 .cajaEq p
 {
@@ -45,3 +45,39 @@ p[name="res"]
 	font-weight:bold;
 	color:white;
 }
+.exp
+{
+
+}
+.expo
+{
+	color:red;
+	vertical-align:super;
+	font-size:0.8em;
+	margin-left:7px;
+}
+.uno
+{
+	visibility: hidden
+}
+#routh
+{
+	width:80%;
+	margin-left:10%;
+	text-align:center;
+	border-collapse:collapse;
+	table-layout: fixed
+}
+#routh td
+{
+	height:2em;
+	border:1px solid dimgray;
+}
+#pRouth
+{
+	text-align:center;
+	font-size:1.3em;
+}
+.sEstable{color:green;}
+.sInestable{color:red;}
+.sEstable, .sInestable{text-align:center}
