@@ -43,8 +43,6 @@ FactorOrd.prototype.mkFactor=function(f)
 	var monIncog=new Mon();
 		monIncog.nIncog(nInc);
 
-	log.enable=false;
-
 	if(this.expresion.const)
 	{
 		this[f][0]=new Exp();
@@ -83,7 +81,7 @@ FactorOrd.prototype.mkFactor=function(f)
 	}
 
 	/*
-	log.enable=true;
+	log.enable=false;
 	for(var j=0;j<this[f].length;j++)
 	{
 		if(this[f][j])

@@ -66,34 +66,39 @@
 					nP.setAttribute('class','exp');
 				if(expresion.const)
 				{
-					var txt=document.createTextNode(expresion.const+'+')
+					var txt=document.createTextNode(expresion.const)
 					nP.appendChild(txt);
 				}
 
 				for(var k=0;k<expresion.monomios.length;k++)
 				{
 					var mon=expresion.monomios[k]
-					var txt=document.createTextNode(mon.cohef);
+					var mas=''+mon.cohef;
+					if(k&&mas[0]!='-')
+					{
+						mas='+'+mas;
+					}
+					var txt=document.createTextNode(mas);
 					nP.appendChild(txt);
 
 					for(var e=0;e<mon.incogs.length;e++)
 					{
 						var txt=document.createTextNode(mon.incogs[e]);
 							nP.appendChild(txt);
+						var classExpo='expo '
 
-
+						if(mon[mon.incogs[e]]==1)
+						{
+							classExpo+=' uno';
+						}
 						var nSpan=document.createElement('span');
-							nSpan.setAttribute('class','expo');
+							nSpan.setAttribute('class',classExpo);
 
 							nSpan.innerHTML+=mon[mon.incogs[e]];
 
 							nP.appendChild(nSpan);
 					}
-
-					var txt=document.createTextNode('+')
-					nP.appendChild(txt);
 				}
-				nP.innerHTML=nP.innerHTML.substr(0,nP.innerHTML.length-1);
 
 				return nP;
 			}
@@ -102,14 +107,14 @@
 				var tabla=document.createElement('table');
 					tabla.setAttribute('id','routh');
 
-				var pRouth=new FactorOrd('x',Expresiones[1]);
+				 pRouth=new FactorOrd('x',Expresiones[1]);
 
 				var str='';
 				var nP=document.createElement('p');
 					nP.setAttribute('id','pRouth');
 				for(var i=0;i<pRouth['x'].length;i++)
 				{
-					var expo='';
+					var expo='<span class="expo">';
 					var incog='';
 
 					if(i>0)
@@ -120,7 +125,13 @@
 							expo+=''+i;
 						}
 					}
-					nP.innerHTML+=graficaExp(pRouth['x'][i]).innerHTML+''+incog+'<span class="expo">'+expo+'</span>+';
+
+					var suma=graficaExp(pRouth['x'][i]).innerHTML+''+incog+expo+'</span>';
+					if(i&&suma[0]!='-')
+					{
+						nP.innerHTML+='+';
+					}
+					nP.innerHTML+=suma;
 				}
 				nP.innerHTML=nP.innerHTML.substr(0,nP.innerHTML.length-1);
 				document.body.appendChild(nP)

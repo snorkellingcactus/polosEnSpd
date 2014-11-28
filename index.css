@@ -47,14 +47,11 @@ p[name="res"]
 }
 .exp
 {
-
 }
 .expo
 {
-	color:red;
+	color:dimgray;
 	vertical-align:super;
-	font-size:0.8em;
-	margin-left:7px;
 }
 .uno
 {
