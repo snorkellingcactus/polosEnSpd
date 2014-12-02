@@ -2,7 +2,7 @@ Log=function()
 {
 	this.buff="";
 	this.splTxt=":::::::::::::::::::::::::::::::::::::::::::::::::::";
-	this.enable=false;
+	this.enable=true;
 	this.arrayDef=false;
 	this.cambio=false
 }

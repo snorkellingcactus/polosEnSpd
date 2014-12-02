@@ -304,8 +304,8 @@ Exp.prototype.esK=function()
 Exp.prototype.div=function(div)
 {
 	this.loginIni(this,div,'%');
-	log.enable=false;
-	//log.enable=false;
+	log.enable=true;
+	//log.enable=true;
 
 	interp=new Interp()
 	interp.num=this;
@@ -322,12 +322,12 @@ Exp.prototype.suma=function(suma)
 {
 	this.loginIni(this,suma,'+');
 
-	log.enable=false;
+	log.enable=true;
 
 	this.apila(suma)
 	this.const+=suma.const;
 
-	//log.enable=false;
+	//log.enable=true;
 
 	this.login();
 
@@ -340,7 +340,7 @@ Exp.prototype.resta=function(resta)
 	nExp.suma(resta);
 
 
-	log.enable=false;
+	log.enable=true;
 	log.txt('Resta:');
 	for(var i=0;i<nExp.monomios.length;i++)
 	{
@@ -353,14 +353,14 @@ Exp.prototype.resta=function(resta)
 	this.suma(nExp);
 
 	this.login();
-	log.enable=false;
+	log.enable=true;
 
 	return this;
 }
 Exp.prototype.mult=function(mult)
 {
 	this.loginIni(this,mult,'X');
-	log.enable=false;
+	log.enable=true;
 
 	interp=new Interp()
 	interp.num=this;
@@ -368,7 +368,7 @@ Exp.prototype.mult=function(mult)
 	interp.mult=1;
 	interp.mkMult();
 
-	//log.enable=false;
+	//log.enable=true;
 
 	interp.buff.login();
 

@@ -215,6 +215,7 @@
 					{
 						signo='-';
 					}
+
 					if(Math.abs(pRouth.rangos[1])==Infinity)
 					{
 						pRouth.rangos[1]='∞';
@@ -240,8 +241,8 @@
 			}
 			function outInput()
 			{
-				log.enable=false;
-				//log.enable=false;
+				log.enable=true;
+				//log.enable=true;
 
 				for(var i=0;i<Inputs.length;i++)
 				{
@@ -256,7 +257,7 @@
 				}
 				log.fn("Respuesta:");
 
-				log.enable=false;
+				log.enable=true;
 				for(var i=0;i<Expresiones.length;i++)
 				{
 					log.fn('Expresion '+i+' :');
@@ -282,7 +283,7 @@
 				log.txt('Denominador GP + Numerador GP');
 				GPD=GPD.suma(GPN);
 
-				log.enable=false;
+				log.enable=true;
 				tablaRouth();
 			}
 			
