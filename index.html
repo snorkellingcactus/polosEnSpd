@@ -50,7 +50,7 @@
 			}
 
 			log=new Log();
-			/*
+			
 			setInterval(actLog , 200);
 
 			function actLog()
@@ -62,23 +62,33 @@
 					log.cambio=0;
 				}
 			}
-			*/
+			
 
 			function graficaExp(expresion)
 			{
 				var nP=document.createElement('p');
 					nP.setAttribute('class','exp');
+
+				if(!expresion)
+				{
+					return nP;
+				}
 				if(expresion.const)
 				{
 					var txt=document.createTextNode(expresion.const)
+
 					nP.appendChild(txt);
 				}
-
 				for(var k=0;k<expresion.monomios.length;k++)
 				{
 					var mon=expresion.monomios[k]
-					var mas=''+mon.cohef;
-					if(k&&mas[0]!='-')
+					var mas='';
+					if(mon.cohef&&mon.cohef!==1)
+					{
+						log.fn('Cohef'+mon.cohef);
+						mas+=mon.cohef;
+					}
+					if((k||expresion.const)&&mas[0]!='-')
 					{
 						mas='+'+mas;
 					}
@@ -91,7 +101,7 @@
 							nP.appendChild(txt);
 						var classExpo='expo '
 
-						if(mon[mon.incogs[e]]==1)
+						if(mon[mon.incogs[e]]===1)
 						{
 							classExpo+=' uno';
 						}
@@ -111,7 +121,7 @@
 				var tabla=document.createElement('table');
 					tabla.setAttribute('id','routh');
 
-				 pRouth=new FactorOrd('x',Expresiones[1]);
+				 pRouth=new FactorOrd('x',GPD);
 
 				var str='';
 				var nP=document.createElement('p');
@@ -137,17 +147,12 @@
 					}
 					nP.innerHTML+=suma;
 				}
-				nP.innerHTML=nP.innerHTML.substr(0,nP.innerHTML.length-1);
-				document.body.appendChild(nP)
+				document.body.appendChild(nP);
 
 				var tRouth=pRouth.tablaRouth('x');
 
 				for(var i=0;i<tRouth.length;i++)
 				{
-					if(!tRouth[i])
-					{
-						return 0;
-					}
 					var tr=document.createElement('tr');
 					var td=document.createElement('td');
 					var nP=document.createElement('p');
@@ -199,8 +204,8 @@
 			}
 			function outInput()
 			{
-				log.enable=false;
-				//log.enable=false;
+				log.enable=true;
+				//log.enable=true;
 
 				for(var i=0;i<Inputs.length;i++)
 				{
@@ -215,7 +220,7 @@
 				}
 				log.fn("Respuesta:");
 
-				log.enable=false;
+				log.enable=true;
 				for(var i=0;i<Expresiones.length;i++)
 				{
 					log.fn('Expresion '+i+' :');
@@ -227,7 +232,7 @@
 					log.sep();
 				}
 
-				var GPN,HPN,GPD,GPD;
+				var GPN,HPN,HPD;
 
 				GPN=Expresiones[0];
 				GPD=Expresiones[1];
@@ -235,13 +240,13 @@
 				HPD=Expresiones[3];
 
 				log.txt('Numerador GP X Numerador HP');
-				GPN.mult(HPN);
+				GPN=GPN.mult(HPN);
 				log.txt('Denominador GP X Denominador HP');
-				GPD.mult(HPD);
+				GPD=GPD.mult(HPD);
 				log.txt('Denominador GP + Numerador GP');
-				GPD.suma(GPN);
+				GPD=GPD.suma(GPN);
 
-				log.enable=false;
+				log.enable=true;
 				tablaRouth();
 			}
 			

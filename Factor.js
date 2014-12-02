@@ -43,6 +43,8 @@ FactorOrd.prototype.mkFactor=function(f)
 	var monIncog=new Mon();
 		monIncog.nIncog(nInc);
 
+	log.enable=true
+
 	if(this.expresion.const)
 	{
 		this[f][0]=new Exp();
@@ -50,10 +52,16 @@ FactorOrd.prototype.mkFactor=function(f)
 	}
 	for(var i=0;i<this.expresion.monomios.length;i++)
 	{
+
 		var mon=this.expresion.monomios[i];
+		log.txt('Expresion mon');
+		log.array();
+		log.array(mon);
+		log.array();
+		var mon=this.expresion.monomios[i];
+
 		var nMon=new Mon();
 			nMon.getRefMon(mon);
-
 		if(mon[nInc])
 		{
 			var expo=mon[nInc];
@@ -67,10 +75,22 @@ FactorOrd.prototype.mkFactor=function(f)
 				this[f][expo]=new Exp();
 			}
 			
+			log.txt('Insertando monomio para '+nInc+'^'+expo+' :');
+
+			log.array();
+			log.array(nMon);
+			log.array();
+
 			this[f][expo].insMonomio(nMon);
 		}
 		else
 		{
+			log.txt('Insertando monomio para '+nInc+'^0 :');
+
+			log.array();
+			log.array(nMon);
+			log.array();
+
 			if(!this[f][0])
 			{
 				this[f][0]=new Exp();
@@ -79,20 +99,19 @@ FactorOrd.prototype.mkFactor=function(f)
 			this[f][0].insMonomio(nMon);
 		}
 	}
-
-	/*
-	log.enable=false;
+	
+	log.enable=true;
 	for(var j=0;j<this[f].length;j++)
 	{
 		if(this[f][j])
 		{
 			log.txt('Factor para '+f+'^'+j+' :');
+			log.txt('Constante='+this[f][j].const);
 			log.array();
-			log.array('Constante='+this[f][j].const);
 			log.array(this[f][j].monomios);
 			log.array();
 		}
-	}*/
+	}
 }
 FactorOrd.prototype.tablaRouth=function(f)
 {
@@ -125,34 +144,46 @@ FactorOrd.prototype.tablaRouth=function(f)
 			{
 				if(j<(jMax-1))
 				{
-					var nExp=new Exp();
-						nExp.apila(tabla[i-1][0]);
-						nExp.const=tabla[i-1][0].const;
+					var	nExp=tabla[i-1][0];
 
-					var nExpE=new Exp();
-						nExpE.apila(tabla[i-1][0]);
-						nExpE.const=tabla[i-1][0].const;
+					var	nExpB=tabla[i-2][1+j];
 
-					var nExpB=new Exp();
-						nExpB.apila(tabla[i-2][1+j]);
-						nExpB.const=tabla[i-2][1+j].const;
+					var	nExpE=tabla[i-1][0];
 
-					var nExpC=new Exp();
-						nExpC.apila(tabla[i-2][0]);
-						nExpC.const=tabla[i-2][0].const;
+					var	nExpC=tabla[i-2][0];
 
-					var nExpD=new Exp();
-						nExpD.apila(tabla[i-1][1+j]);
-						nExpD.const=tabla[i-1][1+j].const;
+					var	nExpD=tabla[i-1][1+j];
 
-						nExp.mult(nExpB);
-						nExpC.mult(nExpD);
+						log.txt('Expresion:');
+						log.fn
+						(
+							'( ( '+graficaExp(nExp).innerHTML+
+							' * '+graficaExp(nExpB).innerHTML+
+							' ) - ( '+graficaExp(nExpC).innerHTML+
+							'* '+graficaExp(nExpD).innerHTML+
+							' ) ) % ( '+graficaExp(nExpE).innerHTML+' )'
+						);
 
-						nExp.resta(nExpC);
+						log.txt('ExpD.const = '+nExpD.const+'');
+						log.txt('ExpD.mons = '+nExpD.monomios.length+'');
+						if(nExpD.const || nExpD.monomios.length)
+						{
+							nExp=nExp.mult(nExpB);
 
-						nExp.div(nExpE);
+							nExpC=nExpC.mult(nExpD);
+
+							nExp=nExp.resta(nExpC);
+
+							nExp=nExp.div(nExpE);
+						}
+						else
+						{
+							nExp=nExpB;
+						}
 
 						tabla[i][j]=nExp;
+
+						log.txt('= '+graficaExp(nExp).innerHTML);
 				}
 			}
 			if(this.estable&&(signo!=esPositivo(tabla[i][j].const)))

@@ -283,7 +283,7 @@ Interp.prototype.mkMult=function()
 			else
 			{
 				this.log.txt("Fusionando Monomio (Multiplicando)");
-				this.num.fusiona(this.buff , 3);
+				this.num=this.num.fusiona(this.buff , 3);
 			}
 
 			this.buff=this.num;
@@ -294,7 +294,7 @@ Interp.prototype.mkMult=function()
 			{
 				if(this.num===false)
 				{
-					this.buff.fusiona(this.monomio , 3);
+					this.buff=this.buff.fusiona(this.monomio , 3);
 				}
 				else
 				{
@@ -354,7 +354,7 @@ Interp.prototype.mkDiv=function()
 			{
 				this.log.txt("Fusionando Monomio (Dividiendo)");
 
-				this.num.fusiona(this.buff , 0);
+				this.num=this.num.fusiona(this.buff , 0);
 			}
 			this.buff=this.num;
 		}
@@ -364,7 +364,7 @@ Interp.prototype.mkDiv=function()
 			{
 				if(this.num===false)
 				{
-					this.buff.fusiona(this.monomio , 0);
+					this.buff=this.buff.fusiona(this.monomio , 0);
 				}
 				else
 				{
