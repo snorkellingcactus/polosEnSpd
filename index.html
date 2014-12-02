@@ -187,20 +187,38 @@
 					tabla.appendChild(tr);
 				}
 
-				nH=document.createElement('h2');
-				if(pRouth.estable)
+				nHE=document.createElement('h2');
+				nHE.innerHTML='Sistema Estable ';
+				if(pRouth.rangos.length)
 				{
-					nH.innerHTML='Sistema Estable';
-					nH.setAttribute('class','sEstable');
+					var signo='';
+
+					if(pRouth.rangos[1]<0)
+					{
+						signo='-';
+					}
+					if(Math.abs(pRouth.rangos[1])==Infinity)
+					{
+						pRouth.rangos[1]='∞';
+					}
+					nHE.innerHTML+='Para ganancias de '+pRouth.rangos[0]+' hasta '+pRouth.rangos[1];
+					nHE.setAttribute('class','sEstable');
 				}
 				else
 				{
-					nH.innerHTML='Sistema Inestable';
-					nH.setAttribute('class','sInestable');
+					if(!pRouth.estable)
+					{
+						nHE.innerHTML='Sistema Inestable';
+						nHE.setAttribute('class','sInestable');
+					}
+					else
+					{
+						nHE.setAttribute('class','sEstable');
+					}
 				}
 
 				document.body.appendChild(tabla);
-				document.body.appendChild(nH);
+				document.body.appendChild(nHE);
 			}
 			function outInput()
 			{
