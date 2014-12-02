@@ -118,7 +118,23 @@
 			}
 			function tablaRouth()
 			{
-				var tabla=document.createElement('table');
+				var tabla=document.getElementById('routh');
+				if(tabla)
+				{
+					document.body.removeChild(tabla);
+				}
+				tabla=document.getElementById('estable');
+				if(tabla)
+				{
+					document.body.removeChild(tabla);
+				}
+				tabla=document.getElementById('pRouth');
+				if(tabla)
+				{
+					document.body.removeChild(tabla);
+				}
+
+					tabla=document.createElement('table');
 					tabla.setAttribute('id','routh');
 
 				 pRouth=new FactorOrd('x',GPD);
@@ -188,6 +204,8 @@
 				}
 
 				nHE=document.createElement('h2');
+				nHE.setAttribute('id','estable');
+
 				nHE.innerHTML='Sistema Estable ';
 				if(pRouth.rangos.length)
 				{
