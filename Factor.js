@@ -44,7 +44,7 @@ FactorOrd.prototype.mkFactor=function(f)
 	var monIncog=new Mon();
 		monIncog.nIncog(nInc);
 
-	log.enable=true
+	log.enable=false
 
 	if(this.expresion.const)
 	{
@@ -101,7 +101,7 @@ FactorOrd.prototype.mkFactor=function(f)
 		}
 	}
 	
-	log.enable=true;
+	log.enable=false;
 	for(var j=0;j<this[f].length;j++)
 	{
 		if(this[f][j])

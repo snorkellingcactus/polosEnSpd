@@ -241,8 +241,8 @@
 			}
 			function outInput()
 			{
-				log.enable=true;
-				//log.enable=true;
+				log.enable=false;
+				//log.enable=false;
 
 				for(var i=0;i<Inputs.length;i++)
 				{
@@ -257,7 +257,7 @@
 				}
 				log.fn("Respuesta:");
 
-				log.enable=true;
+				log.enable=false;
 				for(var i=0;i<Expresiones.length;i++)
 				{
 					log.fn('Expresion '+i+' :');
@@ -283,7 +283,7 @@
 				log.txt('Denominador GP + Numerador GP');
 				GPD=GPD.suma(GPN);
 
-				log.enable=true;
+				log.enable=false;
 				tablaRouth();
 			}
 			
