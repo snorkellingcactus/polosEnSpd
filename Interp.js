@@ -364,15 +364,15 @@ Interp.prototype.mkDiv=function()
 		{
 			if(typeof(this.buff)=='object')
 			{
-
+				this.buff.inversa();
+				
 				if(this.num===false)
 				{
-					this.buff=this.buff.fusiona(this.monomio , 0);
+					this.buff=this.buff.fusiona(this.monomio , 3);
 				}
 				else
 				{
 					log.txt('Fusionando constante (Dividiendo)...');
-					this.buff.inversa();
 					this.buff=this.buff.fusConst
 					(
 						this.num,
