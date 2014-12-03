@@ -260,9 +260,8 @@ Exp.prototype.fusConst=function(nConst , op , nExp)
 		log.array();
 		log.array(nMon);
 		log.array();
-
-		return nExp;
 	}
+	return nExp;
 }
 Exp.prototype.inversa=function()
 {
@@ -314,7 +313,7 @@ Exp.prototype.esK=function()
 Exp.prototype.div=function(div)
 {
 	this.loginIni(this,div,'%');
-	log.enable=false;
+	//log.enable=false;
 	//log.enable=false;
 
 	interp=new Interp()
@@ -332,7 +331,7 @@ Exp.prototype.suma=function(suma)
 {
 	this.loginIni(this,suma,'+');
 
-	log.enable=false;
+	//log.enable=false;
 
 	this.apila(suma)
 	this.const+=suma.const;
@@ -350,7 +349,7 @@ Exp.prototype.resta=function(resta)
 	nExp.suma(resta);
 
 
-	log.enable=false;
+	//log.enable=false;
 	log.txt('Resta:');
 	for(var i=0;i<nExp.monomios.length;i++)
 	{
@@ -363,14 +362,14 @@ Exp.prototype.resta=function(resta)
 	this.suma(nExp);
 
 	this.login();
-	log.enable=false;
+	//log.enable=false;
 
 	return this;
 }
 Exp.prototype.mult=function(mult)
 {
 	this.loginIni(this,mult,'X');
-	log.enable=false;
+	//log.enable=false;
 
 	interp=new Interp()
 	interp.num=this;

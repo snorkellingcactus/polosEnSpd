@@ -44,7 +44,7 @@ FactorOrd.prototype.mkFactor=function(f)
 	var monIncog=new Mon();
 		monIncog.nIncog(nInc);
 
-	log.enable=false
+	//log.enable=false
 
 	if(this.expresion.const)
 	{
@@ -110,7 +110,7 @@ FactorOrd.prototype.mkFactor=function(f)
 			log.array();
 		}
 	}
-	log.enable=false;
+	//log.enable=false;
 }
 FactorOrd.prototype.tablaRouth=function(f)
 {
@@ -167,7 +167,7 @@ FactorOrd.prototype.tablaRouth=function(f)
 						log.txt('ExpD.mons = '+nExpD.monomios.length+'');
 
 						nExpC=nExpC.mult(nExpD);
-						
+
 						if(nExpC.const || nExpC.monomios.length)
 						{
 							nExp=nExp.mult(nExpB);

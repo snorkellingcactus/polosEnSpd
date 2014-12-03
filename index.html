@@ -275,12 +275,11 @@
 			function outInput()
 			{
 				log=new Log();
-				log.enable=true;
+				log.enable=false;
 				//log.enable=false;
 
 				for(var i=0;i<Inputs.length;i++)
 				{
-
 					if(Inputs[i].value.length)
 					{
 						var interp=new Interp();
@@ -292,7 +291,7 @@
 				}
 				log.fn("Respuesta:");
 
-				log.enable=true;
+				//log.enable=true;
 				for(var i=0;i<Expresiones.length;i++)
 				{
 					log.fn('Expresion '+i+' :');
@@ -303,7 +302,6 @@
 					log.array()
 					log.sep();
 				}
-				log.enable=false;
 
 				var GPN,HPN,HPD;
 
@@ -319,7 +317,7 @@
 				log.txt('Denominador GP + Numerador GP');
 				GPD=GPD.suma(GPN);
 
-				log.enable=false;
+				//log.enable=false;
 				tablaRouth();
 
 				log.enable=true;
