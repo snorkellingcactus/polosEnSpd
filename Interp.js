@@ -552,6 +552,10 @@ Interp.prototype.opMas=function(letra)
 Interp.prototype.opMenos=function(letra)
 {
 	this.opMas(letra);
+	if(this.num===false&&!this.buff.length)
+	{
+		this.monomio.cohef*=-1;
+	}
 	this.buff=letra;
 }
 Interp.prototype.combina=function(expObj)
