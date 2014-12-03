@@ -298,11 +298,12 @@ Interp.prototype.mkMult=function()
 				}
 				else
 				{
-					this.buff.fusConst
+					this.buff=this.buff.fusConst
 					(
 						this.num,
-						3
-					)
+						3,
+						new Exp()
+					);
 				}
 
 				this.num=this.buff;
@@ -344,10 +345,11 @@ Interp.prototype.mkDiv=function()
 			{
 				this.log.txt("Fusionando Monomio Con Constante (Dividiendo)");
 
-				this.num.fusConst
+				this.num=this.num.fusConst
 				(
 					1/parseFloat(this.buff),
-					3
+					3,
+					new Exp()
 				);
 			}
 			else
@@ -362,24 +364,23 @@ Interp.prototype.mkDiv=function()
 		{
 			if(typeof(this.buff)=='object')
 			{
+
 				if(this.num===false)
 				{
 					this.buff=this.buff.fusiona(this.monomio , 0);
 				}
 				else
 				{
-					this.buff.fusConst
+					log.txt('Fusionando constante (Dividiendo)...');
+					this.buff.inversa();
+					this.buff=this.buff.fusConst
 					(
 						this.num,
-						0
-					)
+						3,
+						new Exp()
+					);
 				}
 
-
-				if(this.buff.const)
-				{
-					this.buff.const=1/this.buff.const;
-				}
 				this.num=this.buff;
 			}
 			else

@@ -136,6 +136,14 @@ Mon.prototype.getRefMon=function(rMon)
 
 	this.cohef=rMon.cohef;
 }
+Mon.prototype.inversa=function()
+{
+	for(var i=0;i<this.incogs.length;i++)
+	{
+		this[this.incogs[i]]*=-1;
+		this.cohef=1/this.cohef;
+	}
+}
 Mon.prototype.fusDiv=function(){}
 Mon.prototype.nIncog=function(incNom)
 {

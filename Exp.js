@@ -212,11 +212,7 @@ Exp.prototype.fusConstMon=function(mon , op)
 	nMon.cohef=nMon.opCohef( this.const , nMon.cohef , op);
 	if(op===0)
 	{
-		for(var i=0;i<nMon.incogs.length;i++)
-		{
-			var nInc=nMon.incogs[i];
-			nMon[nInc]*=-1;
-		}
+		nMon.inversa();
 	}
 
 	log.array()
@@ -225,7 +221,7 @@ Exp.prototype.fusConstMon=function(mon , op)
 
 	return nMon;
 }
-Exp.prototype.fusConst=function(nConst , op)
+Exp.prototype.fusConst=function(nConst , op , nExp)
 {
 	nExp.const=Mon.prototype.opCohef
 	(
@@ -264,6 +260,20 @@ Exp.prototype.fusConst=function(nConst , op)
 		log.array();
 		log.array(nMon);
 		log.array();
+
+		return nExp;
+	}
+}
+Exp.prototype.inversa=function()
+{
+	for(var i=0;i<this.monomios.length;i++)
+	{
+		this.monomios[i].inversa();
+	}
+
+	if(this.const)
+	{
+		this.const=1/this.const;
 	}
 }
 Exp.prototype.apila=function(mon)
