@@ -83,14 +83,13 @@
 				{
 					var mon=expresion.monomios[k]
 					var mas='';
-					if(mon.cohef&&mon.cohef!==1)
+					if(mon.cohef!==1)
 					{
-						log.fn('Cohef'+mon.cohef);
 						mas+=mon.cohef;
 					}
 					if((k||expresion.const)&&mas[0]!='-')
 					{
-						mas='+'+mas;
+						mas=' + '+mas;
 					}
 					var txt=document.createTextNode(mas);
 					nP.appendChild(txt);
@@ -167,13 +166,17 @@
 					}
 
 					var eq=graficaExp(pRouth['x'][i]).innerHTML;
+					if(eq==='1')
+					{
+						eq='';
+					}
 					if
 					(
 						(pRouth['x'][i].monomios.length>1)||
 						(pRouth['x'][i].monomios.length && pRouth['x'][i].const)
 					)
 					{
-						eq='( '+eq+')';
+						eq='( '+eq+' )';
 					}
 					var suma=eq+incog+expo;
 					if(i&&suma[0]!='-')

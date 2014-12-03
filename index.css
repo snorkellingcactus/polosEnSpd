@@ -78,6 +78,10 @@ p[name="res"]
 	text-align:center;
 	font-size:1.3em;
 }
+#pRouth .uno
+{
+	display:none;
+}
 .sEstable{color:green;}
 .sInestable{color:red;}
 .sEstable, .sInestable{text-align:center}
