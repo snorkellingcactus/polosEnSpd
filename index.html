@@ -166,7 +166,16 @@
 						}
 					}
 
-					var suma=graficaExp(pRouth['x'][i]).innerHTML+incog+expo;
+					var eq=graficaExp(pRouth['x'][i]).innerHTML;
+					if
+					(
+						(pRouth['x'][i].monomios.length>1)||
+						(pRouth['x'][i].monomios.length && pRouth['x'][i].const)
+					)
+					{
+						eq='( '+eq+')';
+					}
+					var suma=eq+incog+expo;
 					if(i&&suma[0]!='-')
 					{
 						nP.innerHTML+=' + ';
