@@ -274,16 +274,17 @@ Interp.prototype.mkMult=function()
 		{
 			if(typeof(this.buff)!='object')
 			{
-				this.num.fusConst
+				this.num=this.num.fusConst
 				(
 					parseFloat(this.buff),
-					3
+					3,
+					new Exp()
 				);
 			}
 			else
 			{
 				this.log.txt("Fusionando Monomio (Multiplicando)");
-				this.num=this.num.fusiona(this.buff , 3);
+				this.num=this.num.fusiona(this.buff , 3 , new Exp());
 			}
 
 			this.buff=this.num;
@@ -365,10 +366,10 @@ Interp.prototype.mkDiv=function()
 			if(typeof(this.buff)=='object')
 			{
 				this.buff.inversa();
-				
+
 				if(this.num===false)
 				{
-					this.buff=this.buff.fusiona(this.monomio , 3);
+					this.buff=this.buff.fusiona(this.monomio , 3 , new Exp());
 				}
 				else
 				{
