@@ -15,14 +15,14 @@
 	<body>
 		<div class='cajaEq'>
 			<span>
-				<p>G(P):</p> 
+				<p>G(x):</p> 
 				<div>
 					<input type="text" value="10" autofocus="autofocus" name="pol"/>
 					<input type="text" value="(x+2)*(x+3)" autofocus="autofocus" name="pol"/>
 				</div>
 			</span>
 			<span>
-				<p>H(P):</p> 
+				<p>H(x):</p> 
 				<div>
 					<input type="text" value="1" autofocus="autofocus" name="pol"/>
 					<input type="text" value="x" autofocus="autofocus" name="pol"/>
@@ -113,7 +113,10 @@
 							nP.appendChild(nSpan);
 					}
 				}
-
+				if(!nP.innerHTML.length)
+				{
+					nP.innerHTML='0';
+				}
 				return nP;
 			}
 			function tablaRouth()
@@ -144,22 +147,29 @@
 					nP.setAttribute('id','pRouth');
 				for(var i=0;i<pRouth['x'].length;i++)
 				{
-					var expo='<span class="expo">';
+					var expo='';
 					var incog='';
 
 					if(i>0)
 					{
-						incog='x';
+						if(pRouth['x'][i]&&(pRouth['x'][i].const||pRouth['x'][i].monomios.length))
+						{
+							incog='x';
+						}
+						else
+						{
+							incog='0x';
+						}
 						if(i>1)
 						{
-							expo+=''+i;
+							expo='<span class="expo">'+i+'</span>';
 						}
 					}
 
-					var suma=graficaExp(pRouth['x'][i]).innerHTML+''+incog+expo+'</span>';
+					var suma=graficaExp(pRouth['x'][i]).innerHTML+incog+expo;
 					if(i&&suma[0]!='-')
 					{
-						nP.innerHTML+='+';
+						nP.innerHTML+=' + ';
 					}
 					nP.innerHTML+=suma;
 				}
@@ -220,7 +230,14 @@
 					{
 						pRouth.rangos[1]='∞';
 					}
-					nHE.innerHTML+='Para ganancias de '+pRouth.rangos[0]+' hasta '+pRouth.rangos[1];
+					if(pRouth.rangos[0]!==pRouth.rangos[1])
+					{
+						nHE.innerHTML+='Para ganancias de '+pRouth.rangos[0]+' hasta '+pRouth.rangos[1];
+					}
+					else
+					{
+						nHE.innerHTML+=' Cuando la ganancia es '+pRouth.rangos[0];
+					}
 					nHE.setAttribute('class','sEstable');
 				}
 				else
@@ -241,6 +258,7 @@
 			}
 			function outInput()
 			{
+				log=new Log();
 				log.enable=false;
 				//log.enable=false;
 
@@ -285,6 +303,8 @@
 
 				log.enable=false;
 				tablaRouth();
+
+				log.enable=true;
 			}
 			
 			document.getElementsByName("pol")[0].addEventListener

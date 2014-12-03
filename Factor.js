@@ -60,9 +60,9 @@ FactorOrd.prototype.mkFactor=function(f)
 		log.array(mon);
 		log.array();
 		var mon=this.expresion.monomios[i];
-
 		var nMon=new Mon();
 			nMon.getRefMon(mon);
+
 		if(mon[nInc])
 		{
 			var expo=mon[nInc];
@@ -81,7 +81,6 @@ FactorOrd.prototype.mkFactor=function(f)
 			log.array();
 			log.array(nMon);
 			log.array();
-
 			this[f][expo].insMonomio(nMon);
 		}
 		else
@@ -100,8 +99,6 @@ FactorOrd.prototype.mkFactor=function(f)
 			this[f][0].insMonomio(nMon);
 		}
 	}
-	
-	log.enable=false;
 	for(var j=0;j<this[f].length;j++)
 	{
 		if(this[f][j])
@@ -113,6 +110,7 @@ FactorOrd.prototype.mkFactor=function(f)
 			log.array();
 		}
 	}
+	log.enable=false;
 }
 FactorOrd.prototype.tablaRouth=function(f)
 {
@@ -167,15 +165,17 @@ FactorOrd.prototype.tablaRouth=function(f)
 
 						log.txt('ExpD.const = '+nExpD.const+'');
 						log.txt('ExpD.mons = '+nExpD.monomios.length+'');
-						if(nExpD.const || nExpD.monomios.length)
+
+						nExpC=nExpC.mult(nExpD);
+						
+						if(nExpC.const || nExpC.monomios.length)
 						{
 							nExp=nExp.mult(nExpB);
-
-							nExpC=nExpC.mult(nExpD);
 
 							nExp=nExp.resta(nExpC);
 
 							nExp=nExp.div(nExpE);
+
 						}
 						else
 						{
