@@ -62,13 +62,16 @@ p[name="res"]
 	width:80%;
 	margin-left:10%;
 	text-align:center;
-	border-collapse:collapse;
-	table-layout: fixed
+	border-spacing:0px;
+	table-layout: fixed;
+	border-bottom:1px solid dimgray;
+	border-right:1px solid dimgray;
 }
 #routh td
 {
 	height:2em;
-	border:1px solid dimgray;
+	border-top:1px solid dimgray;
+	border-left:1px solid dimgray;
 }
 #pRouth
 {
