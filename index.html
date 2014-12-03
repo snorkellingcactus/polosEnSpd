@@ -228,7 +228,23 @@
 
 					if(Math.abs(pRouth.rangos[1])==Infinity)
 					{
-						pRouth.rangos[1]='∞';
+						var signo='';
+
+						if(pRouth.rangos[1]<0)
+						{
+							signo='-';
+						}
+						pRouth.rangos[1]=signo+'∞';
+					}
+					if(Math.abs(pRouth.rangos[0])==Infinity)
+					{
+						var signo='';
+
+						if(pRouth.rangos[0]<0)
+						{
+							signo='-';
+						}
+						pRouth.rangos[0]=signo+'∞';
 					}
 					if(pRouth.rangos[0]!==pRouth.rangos[1])
 					{
