@@ -221,6 +221,7 @@ FactorOrd.prototype.tablaRouth=function(f)
 					var mon=expresion.monomios[0];
 					var val=[0 , Infinity];
 					var signo=1;
+					var expo=mon[mon.incogs[0]];
 
 					if(esPositivo(expresion.const)===esPositivo(mon.cohef))
 					{
@@ -229,7 +230,19 @@ FactorOrd.prototype.tablaRouth=function(f)
 
 
 					val[0]=Math.abs(expresion.const/mon.cohef)*signo;
-					val[0]=Math.pow(val[0] , 1/mon[mon.incogs[0]]);
+					if
+					(
+						(Math.abs(expo)>2)&&
+						(expo%2!=0)
+					)
+					{
+						val[0]=(Math.pow
+						(
+							Math.abs(val[0]),
+							1/expo
+						)-1e-15)*signo;
+					}
+
 
 					val[1]*=esPositivo(mon.cohef);
 					this.rangos.push
