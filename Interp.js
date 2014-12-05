@@ -138,6 +138,10 @@ Interp.prototype.letraOp=function(letra)
 			this.mkOps();
 			this.opMas(letra);
 		break;
+		case '.':
+		case ',':
+			this.buff+='.';
+		break;
 		default:
 		this.mkOps();
 		this.incogOp(letra);

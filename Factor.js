@@ -11,6 +11,7 @@ FactorOrd=function()
 
 	this.factores=[];
 	this.estable=1;
+	this.estabilizable=1;
 	this.rangos=[];
 
 	if(arguments[0])
@@ -24,6 +25,20 @@ FactorOrd=function()
 			this.mkFactores();
 		}
 	}
+}
+FactorOrd.prototype.estabilidad=function(signoPrev , k)
+{
+	if
+	(
+		this.estabilizable&&
+		this.estable&&
+		(signoPrev!=esPositivo(k))
+	)
+	{
+		this.estable=0;
+	}
+
+	return this.estable;
 }
 FactorOrd.prototype.nFactor=function(f)
 {
@@ -133,6 +148,15 @@ FactorOrd.prototype.tablaRouth=function(f)
 				{
 					tabla[i][j]=this[f][nExp];
 
+					if
+					(
+						!this.estabilidad(1 , tabla[i][j].const)
+					)
+					{
+						this.estabilizable=0;
+						this.rangos=false;
+					}
+
 					if(!signo)
 					{
 						signo=esPositivo(tabla[i][j].const);
@@ -186,7 +210,12 @@ FactorOrd.prototype.tablaRouth=function(f)
 
 						log.txt('= '+graficaExp(nExp).innerHTML);
 				}
-				if(!j&&tabla[i][0].monomios.length)
+				if
+				(
+					this.estabilizable&&
+					!j&&
+					tabla[i][0].monomios.length
+				)
 				{
 					var expresion=tabla[i][0]
 					var mon=expresion.monomios[0];
@@ -214,10 +243,9 @@ FactorOrd.prototype.tablaRouth=function(f)
 					log.txt('Un rango máximo como'+Math.max(val[0] , val[1]));
 				}
 			}
-			if(this.estable&&(signo!=esPositivo(tabla[i][j].const)))
-			{
-				this.estable=0;
-			}
+
+			this.estabilidad(signo , tabla[i][j].const);
+			window.console.log(this.estabilizable)
 		}
 	}
 	if(this.rangos.length)
