@@ -229,6 +229,7 @@ FactorOrd.prototype.tablaRouth=function(f)
 
 
 					val[0]=Math.abs(expresion.const/mon.cohef)*signo;
+					val[0]=Math.pow(val[0] , 1/mon[mon.incogs[0]]);
 
 					val[1]*=esPositivo(mon.cohef);
 					this.rangos.push

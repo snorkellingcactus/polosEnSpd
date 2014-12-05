@@ -148,7 +148,14 @@
 				{
 					if(!pRouth['x'][i])
 					{
-						nP.innerHTML+='0 ';
+						if(i>0)
+						{
+							nP.innerHTML+=' + 0 ';
+						}
+						else
+						{
+							nP.innerHTML+='0 ';
+						}
 						continue;
 					}
 					var expo='';
