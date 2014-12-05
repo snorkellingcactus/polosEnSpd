@@ -146,6 +146,11 @@
 					nP.setAttribute('id','pRouth');
 				for(var i=0;i<pRouth['x'].length;i++)
 				{
+					if(!pRouth['x'][i])
+					{
+						nP.innerHTML+='0 ';
+						continue;
+					}
 					var expo='';
 					var incog='';
 
@@ -166,7 +171,7 @@
 					}
 
 					var eq=graficaExp(pRouth['x'][i]).innerHTML;
-					if(eq==='1')
+					if(i&&eq==='1')
 					{
 						eq='';
 					}
