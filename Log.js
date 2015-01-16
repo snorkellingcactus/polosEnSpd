@@ -4,7 +4,46 @@ Log=function()
 	this.splTxt=":::::::::::::::::::::::::::::::::::::::::::::::::::";
 	this.enable=false;
 	this.arrayDef=false;
-	this.cambio=false
+	this.cambio=false;
+	this.niv=0;
+	this.html='';
+	this.fnLlave=function(tipo , estado)
+	{
+		switch(tipo)
+		{
+			case 0: 	//Llave
+				if(estado)
+				{
+					this.html+='<div class="llave">{';
+				}
+				else
+				{
+					this.html+='}</div>';
+				}
+			break;
+			case 2:		//Paréntesis
+				if(estado)
+				{
+					this.html+='<div class="paren">(';
+				}
+				else
+				{
+					this.html+=')</div>';
+				}
+			break;
+			case 1:		//Corchete
+				if(estado)
+				{
+					this.html+='<div class="corcho">[';
+
+				}
+				else
+				{
+					this.html+=']</div>';
+				}
+			break;
+		}
+	};
 }
 Log.prototype.fn=function(nombre)
 {
@@ -39,31 +78,37 @@ Log.prototype.arrayStr=function(param,clave)
 	var tipo=param.constructor.toString();
 	var esArr=tipo.indexOf("Array()")!=-1;
 	var esObj=typeof param == 'object';
-	var clase="objEle";
-	var sep=["{","}"];
+	var llave=0;
 	
 	if(esArr)
 	{
-		clase="arrEle";
-		sep=["[","]"];
+		llave=1;
 	}
 	if(esArr || esObj)
 	{
-		this.buff+=" "+sep[0]+" ";
+
 		for(var clave in param)
 		{
 			var prop=param[clave];
+
+			if(clave=='log'||prop instanceof(Log))
+			{
+				continue;
+			}
 			if(param.hasOwnProperty(clave))
 			{
-				this.buff+="<font class='"+clase+"'>"+clave+":</font>";
+				this.fnLlave(llave,1);
+				this.niv++;
+				this.html+='<font class="clave">'+clave+':</font>';
 				this.arrayStr(prop,clave);
+				this.niv--;
+				this.fnLlave(llave,0)
 			}
 		}
-		this.buff=this.buff.substr(0,this.buff.length-1)+" "+sep[1]+" ";
 	}
 	else
 	{
-		this.buff+=" "+param+" ,";
+		this.html+='<font class="param">'+param+',</font>';
 	}
 }
 Log.prototype.array=function()
@@ -77,13 +122,15 @@ Log.prototype.array=function()
 		}
 		else
 		{
-			this.buff+=")</p>"
+			this.fnLlave(2,0);
 			this.arrayDef=false;
+			this.buff+=this.html;
+			this.html='';
 		}
 	}
 	else
 	{
-		this.buff+="<p>Array(";
+		this.fnLlave(2,1);
 		this.arrayDef=true;
 	}
 }

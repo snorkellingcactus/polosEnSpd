@@ -85,3 +85,54 @@ p[name="res"]
 .sEstable{color:green;}
 .sInestable{color:red;}
 .sEstable, .sInestable{text-align:center}
+.bode
+{
+
+}
+.linea
+{
+	border-color:dimgray;
+	position:absolute;
+}
+.V
+{
+	border-top:1px dashed dimgray;
+}
+.H
+{
+	border-left:1px dashed dimgray;
+}
+.llave
+{
+	color:#58ACFA;
+}
+.paren
+{
+	color:#58ACFA;
+}
+.corcho
+{
+	color:#58ACFA;
+}
+.corcho font
+{
+
+}
+.llave , .corcho , .paren ,.llave font, .corcho font, .paren font
+{
+	position:relative;
+	left:2%;
+	clear:left;
+	display:block;
+}
+.clave
+{
+	color:#0AC000;
+	clear:none;
+}
+.param
+{
+	color:#CB3AFF;
+	clear:none;
+}
+font{display:inherit;}

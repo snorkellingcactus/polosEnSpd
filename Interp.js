@@ -359,7 +359,7 @@ Interp.prototype.mkDiv=function()
 			}
 			else
 			{
-				this.log.txt("Fusionando Monomio (Dividiendo)");
+				log.txt("Fusionando Monomio (Dividiendo)");
 
 				this.num=this.num.fusiona(this.buff , 0);
 			}
@@ -377,7 +377,7 @@ Interp.prototype.mkDiv=function()
 				}
 				else
 				{
-					log.txt('Fusionando constante (Dividiendo)...');
+					log.txt('Fusionando constante con objeto (Dividiendo)...');
 					this.buff=this.buff.fusConst
 					(
 						this.num,

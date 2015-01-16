@@ -8,6 +8,7 @@ Exp=function()
 	//Lista de monomios.
 	this.monomios=[];
 	this.const=0;
+	this.num=false;
 
 	if(arguments.length)
 	{
@@ -132,6 +133,19 @@ Exp.prototype.fusiona=function(mon , op)
 	}
 	else
 	{
+		if(op===0 &&(mon.monomios.length>1||(mon.monomios.length&&mon.const!==0)))
+		{
+			mon.num=this;
+			log.txt('Evitando division de varios denominadores');
+			log.array();
+			log.array(mon);
+			log.array();
+			//No se puede hacer distributiva de un 
+			//numerador con varios denominadores.
+
+
+			return mon;
+		}
 		if(mon.monomios.length)
 		{
 			log.txt('Multiplicando:')
@@ -205,7 +219,7 @@ Exp.prototype.fusionaMon=function(mon , op , nExp)
 }
 Exp.prototype.fusConstMon=function(mon , op)
 {
-	log.txt("Nuevo monomio por Const = "+this.const);
+	log.txt("Nuevo monomio por const = "+this.const);
 	nMon=new Mon();
 	nMon.getRefMon(mon);
 
@@ -402,4 +416,24 @@ Exp.prototype.loginIni=function(A,B,op)
 	log.array();
 	log.array(B.monomios);
 	log.array();
+ }
+ Exp.prototype.calcBode=function(inc,val)
+ {
+ 	var res=0;
+
+ 	for(var i=0;i<this.monomios.length;i++)
+ 	{
+ 		var monAct=this.monomios[i];
+
+ 		
+
+ 		res+=Math.log10(monAct.cohef*val)*(monAct[inc]||1);
+ 	}
+
+ 	if(this.const)
+ 	{
+ 		res+=Math.log10(this.const);
+ 	}
+
+ 	return res;
  }
